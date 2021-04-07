@@ -1,4 +1,7 @@
 import pygame
+from tkinter import *
+from tkinter import messagebox
+
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -6,6 +9,7 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (120, 171, 235)
+BG = (110, 131, 156)
 # This sets the WIDTH and HEIGHT of each grid location
 WIDTH = 20
 HEIGHT = 20
@@ -23,10 +27,10 @@ for row in range(10):
     for column in range(10):
         grid[row].append(0)  # Append a cell
 # grid = [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
-sample = [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
+sample = [[1, 0, 0, 1, 1, 0, 1, 1, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 # Initialize pygame
 pygame.init()
@@ -36,7 +40,7 @@ WINDOW_SIZE = [255, 255]
 screen = pygame.display.set_mode(WINDOW_SIZE)
 
 # Set title of screen
-pygame.display.set_caption("Array Backed Grid")
+pygame.display.set_caption("battleship war")
 
 # Loop until the user clicks the close button.
 done = False
@@ -46,7 +50,7 @@ clock = pygame.time.Clock()
 
 # -------- Main Program Loop -----------
 while not done:
-    hp = 20
+    hp = 3
     score = 0
     for event in pygame.event.get():  # User did something
         if event.type == pygame.QUIT:  # If user clicked close
@@ -76,14 +80,17 @@ while not done:
                 hp -= 1
                 score += 1
                 if hp == 0:
+                    Tk().wm_withdraw()  # to hide the main window
+                    messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
                     done = True
-                    print(score)
             pygame.draw.rect(screen,
                              color,
                              [(MARGIN + WIDTH) * column + MARGIN,
                               (MARGIN + HEIGHT) * row + MARGIN,
                               WIDTH,
                               HEIGHT])
+
+
 
     # Limit to 60 frames per second
     clock.tick(60)
