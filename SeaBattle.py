@@ -1,4 +1,6 @@
 import random
+import matplotlib.pyplot as plt
+
 state0=0
 state1=1
 def optimal_position1(x):
@@ -62,4 +64,9 @@ def optimal_start_position():
     else:
         return optimal_position3(x)
     
-print(optimal_start_position())
+data = optimal_start_position()
+
+plt.imshow(data,extent=[1,10,1,10])
+plt.grid(linestyle = "-", linewidth='0.5', color='red')
+plt.show()
+
