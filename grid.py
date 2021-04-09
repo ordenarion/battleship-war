@@ -1,6 +1,6 @@
 import pygame
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, font
 
 
 def sea_battle():
@@ -12,8 +12,8 @@ def sea_battle():
     BLUE = (120, 171, 235)
     BG = (110, 131, 156)
     # This sets the WIDTH and HEIGHT of each grid location
-    WIDTH = 20
-    HEIGHT = 20
+    WIDTH =40
+    HEIGHT =40
 
     # This sets the margin between each cell
     MARGIN = 5
@@ -36,7 +36,7 @@ def sea_battle():
     pygame.init()
 
     # Set the HEIGHT and WIDTH of the screen
-    WINDOW_SIZE = [255, 255]
+    WINDOW_SIZE = [410, 410]
     screen_person = pygame.display.set_mode(WINDOW_SIZE)
     screen_cpu = pygame.display.set_mode(WINDOW_SIZE)
     # Set title of screen
@@ -84,8 +84,18 @@ def sea_battle():
                     if hp == 0:
                         # Tk().wm_withdraw()  # to hide the main window
                         # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
-                        label.configure(text=f"{score}")
+                        # label.configure(text=f"{score}")
                         done = True
+                        res = Tk()
+                        center_window(500,500,res)
+                        result = Label(res,text = f"Поздравляю, Вы победили, Ваши очки: {score}",font=myFont)
+                        quit_butt = Button(res,text = "Выход",command = quit,font=myFont)
+
+                        result.pack()
+                        quit_butt.pack()
+                        res.mainloop()
+
+
                 pygame.draw.rect(screen_person,
                                  color,
                                  [(MARGIN + WIDTH) * column + MARGIN,
@@ -124,11 +134,13 @@ window.geometry("800x600")
 
 label = Label(text="adasdas")
 
-butt = Button(text="Начать играть", height=5, font="1", width=50, command=sea_battle)
-rules_butt = Button(text="Правила игры", height=5, font="1", width=50, command=start_rules)
-center_window(600, 900, window)
-butt.place(x=75, y=25)
-rules_butt.place(x=75, y=175)
+myFont = font.Font(size=42)
+
+butt = Button(text="Начать играть", font = myFont, command=sea_battle,bg='#0052cc', fg='#ffffff')
+rules_butt = Button(text="Правила игры", font = myFont, command=start_rules,bg='#0052cc', fg='#ffffff')
+center_window(600, 1000, window)
+butt.place(x=80, y=25)
+rules_butt.place(x=80, y=175)
 label.place(x=75, y=800)
 window.configure()
 window.title("Морской boy")
