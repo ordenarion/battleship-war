@@ -1,7 +1,7 @@
 import pygame
 from tkinter import *
 from tkinter import messagebox, font
-
+import math
 
 def sea_battle():
     # Define some colors
@@ -32,11 +32,20 @@ def sea_battle():
               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+    grid_cpu = []
+    for row in range(10):
+        # Add an empty array that will hold each cell
+        # in this row
+        grid_cpu.append([])
+        for column in range(10):
+            grid_cpu[row].append(0)  # Append a cell
     # Initialize pygame
+    grid_cpu[1][1]=-1
     pygame.init()
 
     # Set the HEIGHT and WIDTH of the screen
-    WINDOW_SIZE = [410, 410]
+    WINDOW_SIZE = [1500, 800]
     screen_person = pygame.display.set_mode(WINDOW_SIZE)
     screen_cpu = pygame.display.set_mode(WINDOW_SIZE)
     # Set title of screen
@@ -60,11 +69,16 @@ def sea_battle():
                 # User clicks the mouse. Get the position
                 pos = pygame.mouse.get_pos()
                 # Change the x/y screen coordinates to grid coordinates
-                column = pos[0] // (WIDTH + MARGIN)
-                row = pos[1] // (HEIGHT + MARGIN)
+                column = pos[0] // (WIDTH + MARGIN)-2
+                row = pos[1] //(HEIGHT + MARGIN)-2
+                print(pos)
+                if column >9 or row >9:
+                    pass
+                else:
+                    grid[row][column] = -1
                 # Set that location to one
-                grid[row][column] = -1
-                # print("Click ", pos, "Grid coordinates: ", row, column)
+               # grid[row][column] = -1
+                print("Click ", pos, "Grid coordinates: ", row, column)
 
         # Set the screen background
         screen_person.fill(BLACK)
@@ -95,14 +109,24 @@ def sea_battle():
                         quit_butt.pack()
                         res.mainloop()
 
-
                 pygame.draw.rect(screen_person,
                                  color,
-                                 [(MARGIN + WIDTH) * column + MARGIN,
-                                  (MARGIN + HEIGHT) * row + MARGIN,
+                                 [(MARGIN + WIDTH) * column + MARGIN+100,
+                                  (MARGIN + HEIGHT) * row + MARGIN+100,
                                   WIDTH,
                                   HEIGHT])
 
+        for row in range(10):
+            for column in range(10):
+                color = WHITE
+                if grid_cpu[1][1] == -1:
+                    color=RED
+                pygame.draw.rect(screen_person,
+                                 color,
+                                 [(MARGIN + WIDTH) * column + MARGIN + 900,
+                                  (MARGIN + HEIGHT) * row + MARGIN + 100,
+                                  WIDTH,
+                                  HEIGHT])
         # Limit to 60 frames per second
         clock.tick(60)
 
