@@ -82,7 +82,10 @@ def sea_battle():
 
         # Set the screen background
         screen_person.fill(BLACK)
-
+        pygame.draw.rect(screen_person,WHITE,
+                         pygame.Rect(100,100,(MARGIN+WIDTH)*10+MARGIN,(MARGIN+HEIGHT)*10+MARGIN),2)
+        pygame.draw.rect(screen_person,WHITE,
+                         pygame.Rect(900,100,(MARGIN+WIDTH)*10+MARGIN,(MARGIN+HEIGHT)*10+MARGIN),2)
         # Draw the grid
         for row in range(10):
             for column in range(10):
@@ -119,7 +122,7 @@ def sea_battle():
         for row in range(10):
             for column in range(10):
                 color = WHITE
-                if grid_cpu[1][1] == -1:
+                if grid_cpu[row][column] == -1:
                     color=RED
                 pygame.draw.rect(screen_person,
                                  color,
