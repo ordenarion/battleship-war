@@ -1,7 +1,7 @@
 import pygame
 from tkinter import *
 from tkinter import messagebox, font
-import math
+import random
 
 def sea_battle():
     # Define some colors
@@ -41,7 +41,8 @@ def sea_battle():
         for column in range(10):
             grid_cpu[row].append(0)  # Append a cell
     # Initialize pygame
-    grid_cpu[1][1]=-1
+    grid_cpu_to_attack = [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
+
     pygame.init()
 
     # Set the HEIGHT and WIDTH of the screen
@@ -59,9 +60,18 @@ def sea_battle():
 
     # -------- Main Program Loop -----------
     while not done:
+        i = 1
+
         label.configure(text=None)
         hp = 3
         score = 0
+
+        screen_person.fill(BLACK)
+        pygame.draw.rect(screen_person, WHITE,
+                         pygame.Rect(100, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
+        pygame.draw.rect(screen_person, WHITE,
+                         pygame.Rect(900, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
+
         for event in pygame.event.get():  # User did something
             if event.type == pygame.QUIT:  # If user clicked close
                 done = True  # Flag that we are done so we exit this loop
@@ -76,17 +86,13 @@ def sea_battle():
                     pass
                 else:
                     grid[row][column] = -1
-                # Set that location to one
-               # grid[row][column] = -1
+                    # Set that location to one
+                   # grid[row][column] = -1
                 print("Click ", pos, "Grid coordinates: ", row, column)
 
-        # Set the screen background
-        screen_person.fill(BLACK)
-        pygame.draw.rect(screen_person,WHITE,
-                         pygame.Rect(100,100,(MARGIN+WIDTH)*10+MARGIN,(MARGIN+HEIGHT)*10+MARGIN),2)
-        pygame.draw.rect(screen_person,WHITE,
-                         pygame.Rect(900,100,(MARGIN+WIDTH)*10+MARGIN,(MARGIN+HEIGHT)*10+MARGIN),2)
-        # Draw the grid
+            # Set the screen background
+
+            # Draw the grid
         for row in range(10):
             for column in range(10):
                 color = WHITE
@@ -99,9 +105,9 @@ def sea_battle():
                     hp -= 1
 
                     if hp == 0:
-                        # Tk().wm_withdraw()  # to hide the main window
-                        # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
-                        # label.configure(text=f"{score}")
+                            # Tk().wm_withdraw()  # to hide the main window
+                            # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
+                            # label.configure(text=f"{score}")
                         done = True
                         res = Tk()
                         center_window(500,500,res)
@@ -115,15 +121,23 @@ def sea_battle():
                 pygame.draw.rect(screen_person,
                                  color,
                                  [(MARGIN + WIDTH) * column + MARGIN+100,
-                                  (MARGIN + HEIGHT) * row + MARGIN+100,
-                                  WIDTH,
-                                  HEIGHT])
+                                      (MARGIN + HEIGHT) * row + MARGIN+100,
+                                      WIDTH,
+                                      HEIGHT])
+            i += 1
 
+        pygame.time.wait(10)
+        i = random.randint(0,9)
+        j = random.randint(0,9)
+        print(i,j)
+        grid_cpu[i][j]=-1
         for row in range(10):
             for column in range(10):
                 color = WHITE
-                if grid_cpu[row][column] == -1:
-                    color=RED
+                if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] != 1:
+                    color = BLUE
+                elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == 1:
+                    color = GREEN
                 pygame.draw.rect(screen_person,
                                  color,
                                  [(MARGIN + WIDTH) * column + MARGIN + 900,
