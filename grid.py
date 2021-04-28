@@ -18,6 +18,9 @@ def sea_battle():
     # This sets the margin between each cell
     MARGIN = 5
 
+    cpu_pos = [[x,y] for x in range(10) for y in range(10)]
+
+
     # Create a 2 dimensional array. A two dimensional
     # array is simply a list of lists.
     grid = []
@@ -58,94 +61,165 @@ def sea_battle():
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
 
+
+
+    screen_person.fill(BLACK)
+    pygame.draw.rect(screen_person, WHITE,
+                     pygame.Rect(100, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
+    pygame.draw.rect(screen_person, WHITE,
+                     pygame.Rect(900, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
+
+    i = 2
+    user_miss = False
+    user_hit = False
+
+    cpu_miss = False
+    cpu_hit = False
+    # USER
+    for row in range(10):
+        for column in range(10):
+            color = WHITE
+            pygame.draw.rect(screen_person,
+                             color,
+                             [(MARGIN + WIDTH) * column + MARGIN + 100,
+                              (MARGIN + HEIGHT) * row + MARGIN + 100,
+                              WIDTH,
+                              HEIGHT])
+
+    # CPU
+    for row in range(10):
+        for column in range(10):
+            color = WHITE
+            pygame.draw.rect(screen_person,
+                             color,
+                             [(MARGIN + WIDTH) * column + MARGIN + 900,
+                              (MARGIN + HEIGHT) * row + MARGIN + 100,
+                              WIDTH,
+                              HEIGHT])
     # -------- Main Program Loop -----------
     while not done:
-        i = 1
+
+
 
         label.configure(text=None)
         hp = 3
         score = 0
 
-        screen_person.fill(BLACK)
-        pygame.draw.rect(screen_person, WHITE,
-                         pygame.Rect(100, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
-        pygame.draw.rect(screen_person, WHITE,
-                         pygame.Rect(900, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
 
-        for event in pygame.event.get():  # User did something
-            if event.type == pygame.QUIT:  # If user clicked close
-                done = True  # Flag that we are done so we exit this loop
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                # User clicks the mouse. Get the position
-                pos = pygame.mouse.get_pos()
-                # Change the x/y screen coordinates to grid coordinates
-                column = pos[0] // (WIDTH + MARGIN)-2
-                row = pos[1] //(HEIGHT + MARGIN)-2
-                print(pos)
-                if column >9 or row >9:
-                    pass
-                else:
-                    grid[row][column] = -1
-                    # Set that location to one
-                   # grid[row][column] = -1
-                print("Click ", pos, "Grid coordinates: ", row, column)
+        if i % 2 == 0:
 
-            # Set the screen background
+            for event in pygame.event.get():  # User did something
+                if event.type == pygame.QUIT:  # If user clicked close
+                    done = True  # Flag that we are done so we exit this loop
+                elif event.type == pygame.MOUSEBUTTONDOWN:
 
-            # Draw the grid
-        for row in range(10):
-            for column in range(10):
-                color = WHITE
-                if grid[row][column] == -1 and sample[row][column] != 1:
-                    color = BLUE
-                    score -= 1
-                elif grid[row][column] == -1 and sample[row][column] == 1:
-                    color = RED
-                    score += 1
-                    hp -= 1
+                    # User clicks the mouse. Get the position
+                    pos = pygame.mouse.get_pos()
+                    # Change the x/y screen coordinates to grid coordinates
+                    column = pos[0] // (WIDTH + MARGIN)-2
+                    row = pos[1] //(HEIGHT + MARGIN)-2
+                    print(pos)
+                    if column >9 or row >9:
+                        pass
+                    else:
+                        grid[row][column] = -1
 
-                    if hp == 0:
-                            # Tk().wm_withdraw()  # to hide the main window
-                            # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
-                            # label.configure(text=f"{score}")
-                        done = True
-                        res = Tk()
-                        center_window(500,500,res)
-                        result = Label(res,text = f"Поздравляю, Вы победили, Ваши очки: {score}",font=myFont)
-                        quit_butt = Button(res,text = "Выход",command = quit,font=myFont)
+                        if sample[row][column] == 1:
+                            i += 2
+                        else:
+                            i += 1
 
-                        result.pack()
-                        quit_butt.pack()
-                        res.mainloop()
+                        print(i)
 
-                pygame.draw.rect(screen_person,
-                                 color,
-                                 [(MARGIN + WIDTH) * column + MARGIN+100,
-                                      (MARGIN + HEIGHT) * row + MARGIN+100,
+                        # Set that location to one
+                       # grid[row][column] = -1
+
+                    print("Click ", pos, "Grid coordinates: ", row, column)
+
+                # Set the screen background
+
+                # Draw the grid
+            for row in range(10):
+                for column in range(10):
+                    color = WHITE
+                    if grid[row][column] == -1 and sample[row][column] != 1:
+                        color = BLUE
+                        score -= 1
+                    elif grid[row][column] == -1 and sample[row][column] == 1:
+                        color = RED
+                        score += 1
+                        hp -= 1
+
+                        if hp == 0:
+                                # Tk().wm_withdraw()  # to hide the main window
+                                # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
+                                # label.configure(text=f"{score}")
+                            done = True
+                            res = Tk()
+                            center_window(500,500,res)
+                            result = Label(res,text = f"Поздравляю, Вы победили, Ваши очки: {score}",font=myFont)
+                            quit_butt = Button(res,text = "Выход",command = quit,font=myFont)
+
+                            result.pack()
+                            quit_butt.pack()
+                            res.mainloop()
+
+                    pygame.draw.rect(screen_person,
+                                     color,
+                                     [(MARGIN + WIDTH) * column + MARGIN+100,
+                                          (MARGIN + HEIGHT) * row + MARGIN+100,
+                                          WIDTH,
+                                          HEIGHT])
+            # if user_hit:
+            #     i += 2
+            #     user_hit = False
+            # elif user_miss:
+            #     i += 1
+            #     user_miss = False
+            #
+
+
+        # pygame.time.wait(10)
+        # i = random.randint(0,9)
+        # j = random.randint(0,9)
+        # print(i,j)
+        # grid_cpu[i][j]=-1
+
+        if i % 2 == 1:
+
+            curr_pos = random.choice(cpu_pos)
+            curr_x = curr_pos[0]
+            curr_y = curr_pos[1]
+            grid_cpu[curr_x][curr_y] = -1
+            if grid_cpu_to_attack[curr_x][curr_y] == 1:
+                cpu_hit = True
+            else:
+                cpu_miss = True
+            cpu_pos.remove(curr_pos)
+            print(i)
+
+            for row in range(10):
+                for column in range(10):
+                    color = WHITE
+                    if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] != 1:
+                        color = BLUE
+                    elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == 1:
+                        color = GREEN
+                    pygame.draw.rect(screen_person,
+                                     color,
+                                     [(MARGIN + WIDTH) * column + MARGIN + 900,
+                                      (MARGIN + HEIGHT) * row + MARGIN + 100,
                                       WIDTH,
                                       HEIGHT])
-            i += 1
 
-        pygame.time.wait(10)
-        i = random.randint(0,9)
-        j = random.randint(0,9)
-        print(i,j)
-        grid_cpu[i][j]=-1
-        for row in range(10):
-            for column in range(10):
-                color = WHITE
-                if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] != 1:
-                    color = BLUE
-                elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == 1:
-                    color = GREEN
-                pygame.draw.rect(screen_person,
-                                 color,
-                                 [(MARGIN + WIDTH) * column + MARGIN + 900,
-                                  (MARGIN + HEIGHT) * row + MARGIN + 100,
-                                  WIDTH,
-                                  HEIGHT])
-        # Limit to 60 frames per second
-        clock.tick(60)
+            if cpu_hit:
+                cpu_hit = False
+                i += 2
+            elif cpu_miss:
+                cpu_miss = False
+                i += 1
+            # Limit to 60 frames per second
+            clock.tick(60)
 
         # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
