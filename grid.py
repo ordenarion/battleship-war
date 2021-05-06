@@ -3,6 +3,72 @@ from tkinter import *
 from tkinter import messagebox, font
 import random
 
+
+def right_coordinates(x, y):
+    return x > -1 and x < 10 and y > -1 and y < 10
+
+state1 = 1
+def shot(list, ships, x, y):
+    if list[x][y] != 1:
+        list[x][y] = -3
+        return "miss"
+    else:
+        list[x][y] = -2
+        if right_coordinates(x - 1, y - 1):
+            list[x - 1][y - 1] = -3
+        if right_coordinates(x - 1, y + 1):
+            list[x - 1][y + 1] = -3
+        if right_coordinates(x + 1, y - 1):
+            list[x + 1][y - 1] = -3
+        if right_coordinates(x + 1, y + 1):
+            list[x + 1][y + 1] = -3
+        positions = []
+        t1 = False
+        t2 = False
+        t3 = False
+        t4 = False
+        if right_coordinates(x, y - 1) and list[x][y - 1] > -2:
+            positions.append([x, y - 1])
+            t1 = list[x][y - 1] == 1
+        if right_coordinates(x, y + 1) and list[x][y + 1] > -2:
+            positions.append([x, y + 1])
+            t2 = list[x][y + 1] == 1
+        if right_coordinates(x - 1, y) and list[x - 1][y] > -2:
+            positions.append([x - 1, y])
+            t3 = list[x - 1][y] == 1
+        if right_coordinates(x + 1, y) and list[x + 1][y] > -2:
+            positions.append([x + 1, y])
+            t4 = list[x + 1][y] == 1
+
+        sh = 0
+        while not [x, y, state1] in ships[sh]:
+            sh += 1
+        ships[sh][ships[sh].index([x, y, state1])][2] = -2
+        sum = 0
+        for c in range(len(ships[sh])):
+            sum += ships[sh][c][2]
+
+        destroyed = sum == -2 * len(ships[sh])
+
+        if len(positions) == 0 and destroyed:
+            return "destroyed"
+        elif (t1 or t2 or t3 or t4) == False and destroyed:
+            if right_coordinates(x, y - 1) and list[x][y - 1] != -2:
+                list[x][y - 1] = -3
+            if right_coordinates(x, y + 1) and list[x][y + 1] != -2:
+                list[x][y + 1] = -3
+            if right_coordinates(x - 1, y) and list[x - 1][y] != -2:
+                list[x - 1][y] = -3
+            if right_coordinates(x + 1, y) and list[x + 1][y] != -2:
+                list[x + 1][y] = -3
+
+            return "destroyed"
+        elif len(positions) == 0 or (t1 or t2 or t3 or t4) == False:
+            return "alive but no list"
+
+        else:
+            return positions
+
 def sea_battle():
     # Define some colors
     BLACK = (0, 0, 0)
@@ -44,8 +110,29 @@ def sea_battle():
         for column in range(10):
             grid_cpu[row].append(0)  # Append a cell
     # Initialize pygame
-    grid_cpu_to_attack = [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
+    f = [[[1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1]],
+         [[[0, 0, 1], [1, 0, 1], [2, 0, 1], [3, 0, 1]],
+          [[5, 0, 1], [6, 0, 1]],
+          [[8, 0, 1], [9, 0, 1]],
+          [[0, 9, 1], [1, 9, 1], [2, 9, 1]],
+          [[4, 9, 1], [5, 9, 1]],
+          [[7, 9, 1], [8, 9, 1], [9, 9, 1]],
+          [[0, 5, 1]],
+          [[2, 5, 1]],
+          [[4, 4, 1]],
+          [[6, 3, 1]]]]
+    grid_cpu_to_attack =f[0] #[[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
 
+    curr = []
     pygame.init()
 
     # Set the HEIGHT and WIDTH of the screen
@@ -186,24 +273,54 @@ def sea_battle():
         # grid_cpu[i][j]=-1
 
         if i % 2 == 1:
+            if curr == []:
+                coord = random.choice(cpu_pos)
+                while grid_cpu_to_attack[coord[0]][coord[1]]<0:
+                    cpu_pos.remove(coord)
+                    coord = random.choice(cpu_pos)
+                grid_cpu[coord[0]][coord[1]] = -1
 
-            curr_pos = random.choice(cpu_pos)
-            curr_x = curr_pos[0]
-            curr_y = curr_pos[1]
-            grid_cpu[curr_x][curr_y] = -1
-            if grid_cpu_to_attack[curr_x][curr_y] == 1:
-                cpu_hit = True
-            else:
-                cpu_miss = True
-            cpu_pos.remove(curr_pos)
-            print(i)
+                curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
+                if curr == "miss":
+                    curr = []
+                    cpu_miss = True
+                elif curr == "destroyed":
+                    curr = []
+                    cpu_hit = True
+                elif type(curr) == list and curr != []:
+                    cpu_hit = True
+
+            elif curr != []:
+                coord = random.choice(curr)
+                grid_cpu[coord[0]][coord[1]] = -1
+                next_curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
+                if next_curr == "miss":
+                    curr.remove(coord)
+                    cpu_miss = True
+                elif next_curr == "destroyed":
+                    curr = []
+                    cpu_hit = True
+                elif next_curr == "alive but no list":
+                    curr.remove(coord)
+                    cpu_hit = True
+
+            # curr_pos = random.choice(cpu_pos)
+            # curr_x = curr_pos[0]
+            # curr_y = curr_pos[1]
+            # grid_cpu[curr_x][curr_y] = -1
+            # if grid_cpu_to_attack[curr_x][curr_y] == 1:
+            #     cpu_hit = True
+            # else:
+            #     cpu_miss = True
+            # cpu_pos.remove(curr_pos)
+            # print(i)
 
             for row in range(10):
                 for column in range(10):
                     color = WHITE
-                    if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] != 1:
+                    if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -3:
                         color = BLUE
-                    elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == 1:
+                    elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -2:
                         color = GREEN
                     pygame.draw.rect(screen_person,
                                      color,
