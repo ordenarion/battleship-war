@@ -58,8 +58,8 @@ ship5 = ShipASAS(HEIGHT,WIDTH,1,900,600)
 
 # rectangle2 = pygame.rect.Rect(176, 164, 30, 30)
 # rectangle3 = pygame.rect.Rect(176, 194, 30, 30)
-
-# s = pygame.sprite.Group()
+ship_sprites = pygame.sprite.Group()
+ship_sprites.add(ship1,ship2,ship3,ship4,ship5)
 # s.add(rectangle1)
 # s.add(rectangle2)
 # s.add(rectangle3)
@@ -82,13 +82,16 @@ while running:
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                if ship1.rect.collidepoint(event.pos):
-                    rectangle_draging = True
-                    mouse_x, mouse_y = event.pos
-                    mouse_event = tuple(i * (-1) for i in event.pos)
-                    offset = tuple(map(operator.add,ship1.rect.center ,mouse_event))
-                    # offset_x = rectangle.x - mouse_x
-                    # offset_y = rectangle.y - mouse_y
+
+                for ship in ship_sprites:
+                    if ship.rect.collidepoint(event.pos):
+                        rectangle_draging = True
+                        mouse_x, mouse_y = event.pos
+                        mouse_event = tuple(i * (-1) for i in event.pos)
+                        offset = tuple(map(operator.add,ship.rect.center ,mouse_event))
+                            # offset_x = rectangle.x - mouse_x
+                            # offset_y = rectangle.y - mouse_y
+                        curr_ship = ship
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
@@ -97,11 +100,11 @@ while running:
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
                 mouse_x, mouse_y = event.pos
-                # ship1.rect.center = (mouse_x,mouse_y) + offset
-                ship1.rect.center = tuple(map(operator.add,event.pos, offset))
-                # rectangle.x = mouse_x + offset_x
-                # rectangle.y = mouse_y + offset_y
-            # - draws (without updates) -
+                    # ship1.rect.center = (mouse_x,mouse_y) + offset
+                curr_ship.rect.center = tuple(map(operator.add,event.pos, offset))
+                    # rectangle.x = mouse_x + offset_x
+                    # rectangle.y = mouse_y + offset_y
+                # - draws (without updates) -
 
     screen_person.fill(WHITE)
 
@@ -116,11 +119,12 @@ while running:
                               HEIGHT])
 
     pygame.draw.rect(screen_person, GREEN, rectangle)
-    screen_person.blit(ship1.image,ship1.rect)
-    screen_person.blit(ship2.image,ship2.rect)
-    screen_person.blit(ship3.image,ship3.rect)
-    screen_person.blit(ship4.image,ship4.rect)
-    screen_person.blit(ship5.image,ship5.rect)
+    for ship in ship_sprites:
+        screen_person.blit(ship.image,ship.rect)
+    # screen_person.blit(ship2.image,ship2.rect)
+    # screen_person.blit(ship3.image,ship3.rect)
+    # screen_person.blit(ship4.image,ship4.rect)
+    # screen_person.blit(ship5.image,ship5.rect)
     pygame.display.flip()
 
 
