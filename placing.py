@@ -1,3 +1,4 @@
+import operator
 from tkinter import *
 from tkinter import messagebox, font
 import pygame
@@ -8,10 +9,30 @@ import pygame
 #
 #
 # window.mainloop()
+WIDTH = 55
+HEIGHT = 55
+GREEN = (0, 255, 0)
+
+class ShipASAS(pygame.sprite.Sprite):
+    def __init__(self,height,width,n,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface(((height+5)*n,width))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
+
+# all_sprites = pygame.sprite.Group()
+# ship1 = ShipASAS(HEIGHT,WIDTH,3)
+# all_sprites.add(ship1)
+
+
+
+
+
 pygame.init()
 
 WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
+
 RED = (255, 0, 0)
 
 WINDOW_SIZE = [1500, 800]
@@ -23,14 +44,18 @@ rectangle_draging = False
 
 
 
-WIDTH = 40
-HEIGHT = 40
 
 # This sets the margin between each cell
 MARGIN = 5
-л
 
-rectangle = pygame.rect.Rect(176, 134, 30, 30)
+
+rectangle = pygame.rect.Rect(300, 000, WIDTH,HEIGHT)
+ship1 = ShipASAS(HEIGHT,WIDTH,4,900,200)
+ship2 = ShipASAS(HEIGHT,WIDTH,3,900,300)
+ship3 = ShipASAS(HEIGHT,WIDTH,3,900,400)
+ship4 = ShipASAS(HEIGHT,WIDTH,2,900,500)
+ship5 = ShipASAS(HEIGHT,WIDTH,1,900,600)
+
 # rectangle2 = pygame.rect.Rect(176, 164, 30, 30)
 # rectangle3 = pygame.rect.Rect(176, 194, 30, 30)
 
@@ -38,16 +63,16 @@ rectangle = pygame.rect.Rect(176, 134, 30, 30)
 # s.add(rectangle1)
 # s.add(rectangle2)
 # s.add(rectangle3)
-screen_person.fill(WHITE)
-for row in range(10):
-    for column in range(10):
-        color = RED
-        pygame.draw.rect(screen_person,
-                         color,
-                         [(MARGIN + WIDTH) * column + MARGIN + 100,
-                          (MARGIN + HEIGHT) * row + MARGIN + 100,
-                          WIDTH,
-                          HEIGHT])
+# screen_person.fill(WHITE)
+# for row in range(10):
+#     for column in range(10):
+#         color = RED
+#         pygame.draw.rect(screen_person,
+#                          color,
+#                          [(MARGIN + WIDTH) * column + MARGIN + 100,
+#                           (MARGIN + HEIGHT) * row + MARGIN + 100,
+#                           WIDTH,
+#                           HEIGHT])
 
 while running:
 
@@ -57,11 +82,13 @@ while running:
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                if rectangle.collidepoint(event.pos):
+                if ship1.rect.collidepoint(event.pos):
                     rectangle_draging = True
                     mouse_x, mouse_y = event.pos
-                    offset_x = rectangle.x - mouse_x
-                    offset_y = rectangle.y - mouse_y
+                    mouse_event = tuple(i * (-1) for i in event.pos)
+                    offset = tuple(map(operator.add,ship1.rect.center ,mouse_event))
+                    # offset_x = rectangle.x - mouse_x
+                    # offset_y = rectangle.y - mouse_y
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
@@ -70,13 +97,33 @@ while running:
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
                 mouse_x, mouse_y = event.pos
-                rectangle.x = mouse_x + offset_x
-                rectangle.y = mouse_y + offset_y
+                # ship1.rect.center = (mouse_x,mouse_y) + offset
+                ship1.rect.center = tuple(map(operator.add,event.pos, offset))
+                # rectangle.x = mouse_x + offset_x
+                # rectangle.y = mouse_y + offset_y
             # - draws (without updates) -
 
     screen_person.fill(WHITE)
-    pygame.draw.rect(screen_person, RED, rectangle)
+
+    for row in range(10):
+        for column in range(10):
+            color = RED
+            pygame.draw.rect(screen_person,
+                             color,
+                             [(MARGIN + WIDTH) * column + MARGIN + 100,
+                              (MARGIN + HEIGHT) * row + MARGIN + 100,
+                              WIDTH,
+                              HEIGHT])
+
+    pygame.draw.rect(screen_person, GREEN, rectangle)
+    screen_person.blit(ship1.image,ship1.rect)
+    screen_person.blit(ship2.image,ship2.rect)
+    screen_person.blit(ship3.image,ship3.rect)
+    screen_person.blit(ship4.image,ship4.rect)
+    screen_person.blit(ship5.image,ship5.rect)
     pygame.display.flip()
+
+
 
 
 
