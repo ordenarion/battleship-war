@@ -21,14 +21,17 @@ class ShipASAS(pygame.sprite.Sprite):
         self.n = n
         self.x=x
         self.y=y
-        self.image = pygame.Surface(((height+5)*n,width))
+        self.image = pygame.Surface(((height)*n+(n-1)*5,width))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
 
-    def rotate(self):
+    def rotate(self,x= None,y = None):
+        if x == None and y == None:
+            x,y = self.x, self.y
+
         self.image = pygame.transform.rotate(self.image,90)
-        self.rect = self.image.get_rect(center = (self.x,self.y))
+        self.rect = self.image.get_rect(center = (x,y))
 
 
 # all_sprites = pygame.sprite.Group()
@@ -104,21 +107,24 @@ while running:
                             # offset_y = rectangle.y - mouse_y
                         curr_ship = ship
 
-            else:
-                ship1.update()
+            elif event.button == 2:
+                curr_ship.rotate()
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 rectangle_draging = False
 
         elif event.type == pygame.MOUSEMOTION:
-            if rectangle_draging:
+            if rectangle_draging and event.key != pygame.KEYDOWN:
                 mouse_x, mouse_y = event.pos
                     # ship1.rect.center = (mouse_x,mouse_y) + offset
                 curr_ship.rect.center = tuple(map(operator.add,event.pos, offset))
+                # curr_ship.rotate(mouse_x,mouse_y)
                     # rectangle.x = mouse_x + offset_x
                     # rectangle.y = mouse_y + offset_y
                 # - draws (without updates) -
+            elif
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 ship1.rotate()
