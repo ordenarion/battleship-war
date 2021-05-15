@@ -14,17 +14,22 @@ HEIGHT = 55
 GREEN = (0, 255, 0)
 
 class ShipASAS(pygame.sprite.Sprite):
-    def __init__(self,height,width,n,x,y):
+    def __init__(self,height,width,n,x,y,asym =1):
         pygame.sprite.Sprite.__init__(self)
         self.h = height
         self.w = width
         self.n = n
         self.x=x
         self.y=y
-        self.image = pygame.Surface(((height)*n+(n-1)*5,width))
+        if asym == 1:
+            self.image = pygame.Surface(((height)*n+(n-1)*5,width))
+        elif asym == 2:
+            self.image = pygame.Surface((width,(height) * n + (n - 1) * 5))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
+
+
 
     def rotate(self,x= None,y = None):
         if x == None and y == None:
@@ -39,7 +44,7 @@ class ShipASAS(pygame.sprite.Sprite):
 # all_sprites.add(ship1)
 
 
-
+#image = pygame.image.load("подпись.png")
 
 
 pygame.init()
@@ -62,18 +67,24 @@ rectangle_draging = False
 MARGIN = 5
 
 
-rectangle = pygame.rect.Rect(300, 000, WIDTH,HEIGHT)
-ship1 = ShipASAS(HEIGHT,WIDTH,4,900,200)
-ship2 = ShipASAS(HEIGHT,WIDTH,3,900,300)
-ship3 = ShipASAS(HEIGHT,WIDTH,3,900,400)
-ship4 = ShipASAS(HEIGHT,WIDTH,2,900,500)
-ship5 = ShipASAS(HEIGHT,WIDTH,1,900,600)
-ship6 = ShipASAS(HEIGHT,WIDTH,1,900,600)
+#rectangle = pygame.rect.Rect(300, 000, WIDTH,HEIGHT)
+ship4 = ShipASAS(HEIGHT,WIDTH,4,800,300,2)
+#ship4 = ShipASAS(HEIGHT,WIDTH,4,0,0,2)
+#print(ship4.rect.bottomright)
+ship31 = ShipASAS(HEIGHT,WIDTH,3,965,390)
+ship32 = ShipASAS(HEIGHT,WIDTH,3,1190,390)
+ship21 = ShipASAS(HEIGHT,WIDTH,2,905,240,2)
+ship22 = ShipASAS(HEIGHT,WIDTH,2,1020,240,2)
+ship23 = ShipASAS(HEIGHT,WIDTH,2,1135,240,2)
+ship11 = ShipASAS(HEIGHT,WIDTH,1,1355,390)
+ship12 = ShipASAS(HEIGHT,WIDTH,1,1355,270)
+ship13 = ShipASAS(HEIGHT,WIDTH,1,1250,270)
+ship14 = ShipASAS(HEIGHT,WIDTH,1,900,600)
 
 # rectangle2 = pygame.rect.Rect(176, 164, 30, 30)
 # rectangle3 = pygame.rect.Rect(176, 194, 30, 30)
 ship_sprites = pygame.sprite.Group()
-ship_sprites.add(ship1,ship2,ship3,ship4,ship5)
+ship_sprites.add(ship4,ship31,ship32,ship21,ship22,ship23,ship14,ship11,ship13,ship12)
 # s.add(rectangle1)
 # s.add(rectangle2)
 # s.add(rectangle3)
@@ -89,14 +100,14 @@ ship_sprites.add(ship1,ship2,ship3,ship4,ship5)
 #                           HEIGHT])
 
 while running:
-    ship1.update()
+    #ship1.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-
+                print(event.pos)
                 for ship in ship_sprites:
                     if ship.rect.collidepoint(event.pos):
                         rectangle_draging = True
@@ -107,15 +118,24 @@ while running:
                             # offset_y = rectangle.y - mouse_y
                         curr_ship = ship
 
-            elif event.button == 2:
-                curr_ship.rotate()
+            elif event.button == 3 and curr_ship != None:
+                curr_ship.rotate(mouse_x,mouse_y)
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 rectangle_draging = False
+                print(curr_ship.rect.bottom)
+                print("Дно ")
+                print(curr_ship.rect.bottom//(WIDTH+MARGIN)-2)
+                print("Верх")
+                print(curr_ship.rect.top//(HEIGHT+MARGIN)-3)
+                print("Лево")
+                print(curr_ship.rect.left//(HEIGHT+MARGIN)-1)
+                print("Право")
+                print(curr_ship.rect.right//(WIDTH+MARGIN)-1)
 
         elif event.type == pygame.MOUSEMOTION:
-            if rectangle_draging and event.key != pygame.KEYDOWN:
+            if rectangle_draging:
                 mouse_x, mouse_y = event.pos
                     # ship1.rect.center = (mouse_x,mouse_y) + offset
                 curr_ship.rect.center = tuple(map(operator.add,event.pos, offset))
@@ -123,11 +143,14 @@ while running:
                     # rectangle.x = mouse_x + offset_x
                     # rectangle.y = mouse_y + offset_y
                 # - draws (without updates) -
-            elif
+            #elif rectangle_draging and event.key == pygame.KEYDOWN:
+             #   mouse_x, mouse_y = event.pos
+              #  curr_ship.rect.center = tuple(map(operator.add, event.pos, offset))
+               # curr_ship.rotate(mouse_x,mouse_y)
 
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                ship1.rotate()
+        #elif event.type == pygame.KEYDOWN:
+        #    if event.key == pygame.K_UP:
+        #        ship1.rotate()
 
     screen_person.fill(WHITE)
 
@@ -141,7 +164,7 @@ while running:
                               WIDTH,
                               HEIGHT])
 
-    pygame.draw.rect(screen_person, GREEN, rectangle)
+ #   pygame.draw.rect(screen_person, GREEN, rectangle)
     for ship in ship_sprites:
         screen_person.blit(ship.image,ship.rect)
     # screen_person.blit(ship2.image,ship2.rect)
