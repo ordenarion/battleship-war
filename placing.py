@@ -133,7 +133,7 @@ while running:
                 # print(curr_ship.rect.left//(HEIGHT+MARGIN)-1)
                 # print("Право")
                 # print((curr_ship.rect.right-100)//(WIDTH+MARGIN)-1)
-                #
+                ##
                 print(curr_ship.rect.bottom)
                 print("Дно ")
                 print((curr_ship.rect.bottom)//(WIDTH+MARGIN)-2)
