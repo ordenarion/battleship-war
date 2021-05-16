@@ -124,15 +124,25 @@ while running:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 rectangle_draging = False
+                # print(curr_ship.rect.bottom)
+                # print("Дно ")
+                # print((curr_ship.rect.bottom)//(WIDTH+MARGIN)-2)
+                # print("Верх")
+                # print((curr_ship.rect.top+100)//(HEIGHT+MARGIN)-3)
+                # print("Лево")
+                # print(curr_ship.rect.left//(HEIGHT+MARGIN)-1)
+                # print("Право")
+                # print((curr_ship.rect.right-100)//(WIDTH+MARGIN)-1)
+                #
                 print(curr_ship.rect.bottom)
                 print("Дно ")
-                print(curr_ship.rect.bottom//(WIDTH+MARGIN)-2)
+                print((curr_ship.rect.bottom)//(WIDTH+MARGIN)-2)
                 print("Верх")
-                print(curr_ship.rect.top//(HEIGHT+MARGIN)-3)
+                print((curr_ship.rect.top+100)//(HEIGHT+MARGIN)-3)
                 print("Лево")
                 print(curr_ship.rect.left//(HEIGHT+MARGIN)-1)
                 print("Право")
-                print(curr_ship.rect.right//(WIDTH+MARGIN)-1)
+                print((curr_ship.rect.right-100)//(WIDTH+MARGIN)-1)
 
         elif event.type == pygame.MOUSEMOTION:
             if rectangle_draging:
