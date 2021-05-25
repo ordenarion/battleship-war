@@ -140,7 +140,7 @@ def sea_battle():
     screen_person = pygame.display.set_mode(WINDOW_SIZE)
     screen_cpu = pygame.display.set_mode(WINDOW_SIZE)
     # Set title of screen
-    pygame.display.set_caption("battleship war")
+    pygame.display.set_caption("Основной этап: В левом поле стреляет игрок, В правом поле стреляет компьютер. По центру отображается выбранная пользователем расстановка кораблей")
 
     # Loop until the user clicks the close button.
     done = False
@@ -365,6 +365,23 @@ def sea_battle():
 
             # Limit to 60 frames per second
             clock.tick(60)
+
+        for row in range(10):
+            for column in range(10):
+                color = WHITE
+                if grid_cpu_to_attack[row][column] == 1:
+                    color = BLUE
+
+                elif grid_cpu_to_attack[row][column] == 0:
+                    color = WHITE
+                    # time.sleep(1)
+                pygame.draw.rect(screen_person,
+                                 color,
+                                 [(1 + 20) * column + 1 + 620,
+                                  (1 + 20) * row + 1 + 500,
+                                  20,
+                                  20])
+
 
         # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
