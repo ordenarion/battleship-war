@@ -109,7 +109,7 @@ BLACK = (0,0,0)
 
 WINDOW_SIZE = [1500, 800]
 screen_person = pygame.display.set_mode(WINDOW_SIZE)
-pygame.display.set_caption("battleship war")
+pygame.display.set_caption("Начальное размещение кораблей: после размещения нажмите кнопку ""Стрелка вверх"". Если статус бар горит Красным - Вам следует переставить Ваши корабли более корректно, если Зеленым - можете закрывать окно ")
 
 running = True
 rectangle_draging = False
@@ -152,10 +152,8 @@ ship_sprites.add(ship4, ship31, ship32, ship21, ship22, ship23, ship14, ship11, 
 while running:
     # ship1.update()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 print(event.pos)
                 for ship in ship_sprites:
@@ -252,6 +250,12 @@ while running:
                 #print(toCheck)
                 #print(grid_for_shot)
 
+        if event.type == pygame.QUIT and color1 == GREEN:
+            running = False
+            print("GAy")
+
+        elif event.type == pygame.QUIT and color1 == RED:
+            running = False
 
     screen_person.fill(WHITE)
     pygame.draw.rect(screen_person, color1, (10, 10, 100, 50))
