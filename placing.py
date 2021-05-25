@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox, font
 import pygame
 
+
 def placing():
     allpairs = []
     pointsforships = []
@@ -23,42 +24,41 @@ def placing():
     WIDTH = 55
     HEIGHT = 55
     GREEN = (0, 255, 0)
-    SHIPCOL = (106,90,205)
+    SHIPCOL = (106, 90, 205)
 
     def points(x):
-      res=[]
-      for curr in x:
-        if curr[0]==curr[1] and curr[2]==curr[3]:
-          res.append([curr[0],curr[2],1])
+        res = []
+        for curr in x:
+            if curr[0] == curr[1] and curr[2] == curr[3]:
+                res.append([curr[0], curr[2], 1])
 
-        elif curr[0] == curr[1] and curr[2]!=curr[3]:
-          min_coord = min(curr[2],curr[3])
-          max_coord = max(curr[2],curr[3])
+            elif curr[0] == curr[1] and curr[2] != curr[3]:
+                min_coord = min(curr[2], curr[3])
+                max_coord = max(curr[2], curr[3])
 
-          m=[[curr[0],i,1] for i in range(min_coord,max_coord+1)]
-          res.append(m)
+                m = [[curr[0], i, 1] for i in range(min_coord, max_coord + 1)]
+                res.append(m)
 
-        elif curr[0] != curr[1] and curr[2]==curr[3]:
-          min_coord = min(curr[0],curr[1])
-          max_coord = max(curr[0],curr[1])
+            elif curr[0] != curr[1] and curr[2] == curr[3]:
+                min_coord = min(curr[0], curr[1])
+                max_coord = max(curr[0], curr[1])
 
-          m=[[i,curr[2],1] for i in range(min_coord,max_coord+1)]
-          res.append(m)
+                m = [[i, curr[2], 1] for i in range(min_coord, max_coord + 1)]
+                res.append(m)
 
-      return res
+        return res
 
     def flatten_lvl_1(x):
-      k=[]
-      for i in x:
-        for j in i:
-          if isinstance(j,list):
-            k.append(j)
-          else:
-            k.append(i)
-            break
+        k = []
+        for i in x:
+            for j in i:
+                if isinstance(j, list):
+                    k.append(j)
+                else:
+                    k.append(i)
+                    break
 
-      return k
-
+        return k
 
     class ShipASAS(pygame.sprite.Sprite):
         def __init__(self, height, width, n, x, y, asym=1):
@@ -91,11 +91,9 @@ def placing():
             self.extra = [self.xLeft, self.xRight, self.yUp, self.yDown]
             return self.extra
 
-
     # all_sprites = pygame.sprite.Group()
     # ship1 = ShipASAS(HEIGHT,WIDTH,3)
     # all_sprites.add(ship1)
-
 
     # image = pygame.image.load("подпись.png")
     color = GREEN
@@ -105,11 +103,12 @@ def placing():
     WHITE = (255, 255, 255)
     BLUE = (0, 0, 255)
     RED = (255, 0, 0)
-    BLACK = (0,0,0)
+    BLACK = (0, 0, 0)
 
     WINDOW_SIZE = [1500, 800]
     screen_person = pygame.display.set_mode(WINDOW_SIZE)
-    pygame.display.set_caption("Начальное размещение кораблей: после размещения нажмите кнопку ""Стрелка вверх"". Если статус бар горит Красным - Вам следует переставить Ваши корабли более корректно, если Зеленым - можете закрывать окно ")
+    pygame.display.set_caption(
+        "Начальное размещение кораблей: после размещения нажмите кнопку ""Стрелка вверх"". Если статус бар горит Красным - Вам следует переставить Ваши корабли более корректно, если Зеленым - можете закрывать окно ")
 
     running = True
     rectangle_draging = False
@@ -117,7 +116,7 @@ def placing():
     # This sets the margin between each cell
     MARGIN = 5
     color1 = RED
-    rectangle = pygame.rect.Rect(1,1,100,50)
+    rectangle = pygame.rect.Rect(1, 1, 100, 50)
     ship4 = ShipASAS(HEIGHT, WIDTH, 4, 800, 300, 2)
     # ship4 = ShipASAS(HEIGHT,WIDTH,4,0,0,2)
     # print(ship4.rect.bottomright)
@@ -212,13 +211,13 @@ def placing():
                     allpairs = []
                     for ship in ship_sprites:
                         allpairs.append(ship.extreme_points())
-                    #print(allpairs)
+                    # print(allpairs)
                     pointsforships = points(allpairs)
                     toCheck = flatten_lvl_1(pointsforships)
                     flag2 = False
 
                     for i in toCheck:
-                        if i[0] >9 or i[1]>9 or i[0]<0 or i[1]<0:
+                        if i[0] > 9 or i[1] > 9 or i[0] < 0 or i[1] < 0:
                             flag2 = True
                             break
                     if flag2:
@@ -226,29 +225,29 @@ def placing():
 
                     else:
                         finalToCheck = set(tuple(row) for row in toCheck)
-                    #print(toCheck)
+                    # print(toCheck)
                     print("-------------------")
 
                     if len(finalToCheck) < len(toCheck):
                         color1 = RED
-                        #pass #Ошибка, поменйте раположение
+                        # pass #Ошибка, поменйте раположение
                         print(finalToCheck)
                         print(toCheck)
 
                     elif len(finalToCheck) == len(toCheck):
-                    #Заполняем сетку 1 где поинты, используем инфу из toCheck
+                        # Заполняем сетку 1 где поинты, используем инфу из toCheck
                         for point in toCheck:
                             grid_for_shot[point[0]][point[1]] = 1
                             color1 = GREEN
-                        finalGrid = list(map(list,[grid_for_shot]+[pointsforships]))
+                        finalGrid = list(map(list, [grid_for_shot] + [pointsforships]))
                     print(finalGrid)
                     print(finalToCheck)
                     print(toCheck)
                     print(len(toCheck))
                     print(len(finalToCheck))
-                        #Потом объединяем сетку и pointsforships
-                    #print(toCheck)
-                    #print(grid_for_shot)
+                    # Потом объединяем сетку и pointsforships
+                    # print(toCheck)
+                    # print(grid_for_shot)
 
             if event.type == pygame.QUIT and color1 == GREEN:
                 running = False
@@ -260,8 +259,7 @@ def placing():
 
         screen_person.fill(WHITE)
         pygame.draw.rect(screen_person, color1, (10, 10, 100, 50))
-        pygame.draw.rect(screen_person, BLACK, (10, 10, 100, 50),2)
-
+        pygame.draw.rect(screen_person, BLACK, (10, 10, 100, 50), 2)
 
         for row in range(10):
             for column in range(10):
@@ -275,7 +273,7 @@ def placing():
 
         pygame.draw.rect(screen_person, BLACK,
                          pygame.Rect(100, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
-        #pygame.draw.rect(screen_person, GREEN, rectangle)
+        # pygame.draw.rect(screen_person, GREEN, rectangle)
         for ship in ship_sprites:
             screen_person.blit(ship.image, ship.rect)
 
@@ -285,9 +283,8 @@ def placing():
         # screen_person.blit(ship5.image,ship5.rect)
         pygame.display.flip()
 
-
-
     pygame.display.flip()
     pygame.quit()
+
 
 print(placing())

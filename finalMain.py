@@ -195,7 +195,7 @@ def sea_battle():
 
 
 
-        label.configure(text=None)
+#        label.configure(text=None)
 
 
 
@@ -655,7 +655,8 @@ def placing():
 
             if event.type == pygame.QUIT and color1 == GREEN:
                 running = False
-                print("GAy")
+                pygame.quit()
+                sea_battle()
                 return finalGrid
 
             elif event.type == pygame.QUIT and color1 == RED:
@@ -1189,20 +1190,33 @@ korabl = randomUserGrid()[1]
 #
 # for k in range(10):
 #         print(korabl[k])
-print(randomUserGrid())
+#print(randomUserGrid())
 
+def prepare_to_place():
+    window1 = Tk()
+    center_window(600, 400, window1)
+    myFont1 = font.Font(size=70)
+    window1.title("Как расставить корабли?")
+    label1 = Label(window1,font = myFont ,text="Вам предстоить выбрать, как разместить корабли перед сражением:")
+    solo_button = Button(window1,text = "Самостоятельно",font = myFont1,bg='#0052cc', fg='#ffffff',command = placing )
+    random_button = Button(window1,text = "Довериться вере случая",font = myFont1,bg='#0052cc', fg='#ffffff',command = randomUserGrid )
+    solo_button.place(x=65, y=50)
+    random_button.place(x=350, y=50)
+    label1.place(x=50, y=20)
+    window1.mainloop()
 
 window = Tk()
-label = Label(text="adasdas")
+#label = Label(text="adasdas")
 
 myFont = font.Font(size=42)
 
-butt = Button(text="Начать играть", font = myFont, command=sea_battle,bg='#0052cc', fg='#ffffff')
+butt = Button(text="Начать играть", font = myFont, command=prepare_to_place,bg='#0052cc', fg='#ffffff')
 rules_butt = Button(text="Правила игры", font = myFont, command=start_rules,bg='#0052cc', fg='#ffffff')
 center_window(600, 400, window)
-butt.place(x=80, y=25)
-rules_butt.place(x=80, y=175)
-label.place(x=75, y=800)
+butt.place(x=90, y=25)
+rules_butt.place(x=90, y=175)
+#label.place(x=75, y=800)
 window.configure()
 window.title("Морской бой")
 window.mainloop()
+
