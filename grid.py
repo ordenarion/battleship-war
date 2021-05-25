@@ -186,6 +186,7 @@ def sea_battle():
 
     hp_cpu = 2
     hp_user = 2
+    score = 100
     # -------- Main Program Loop -----------
     while not done:
 
@@ -193,7 +194,7 @@ def sea_battle():
 
         label.configure(text=None)
 
-        score = 0
+
 
 
         if i % 2 == 0:
@@ -237,7 +238,7 @@ def sea_battle():
                         score -= 1
                     elif grid[row][column] == -1 and sample[row][column] == 1:
                         color = RED
-                        score += 1
+                        score += 5
                         hp_cpu -= 1
 
 
@@ -383,24 +384,22 @@ def center_window(width=300, height=200, window=None):
 
 def start_rules():
     rule = Tk()
-    center_window(600, 900, rule)
+    center_window(600, 400, rule)
     rule.title("Правила игры")
     rule.mainloop()
 
 
 window = Tk()
-window.geometry("800x600")
-
 label = Label(text="adasdas")
 
 myFont = font.Font(size=42)
 
 butt = Button(text="Начать играть", font = myFont, command=sea_battle,bg='#0052cc', fg='#ffffff')
 rules_butt = Button(text="Правила игры", font = myFont, command=start_rules,bg='#0052cc', fg='#ffffff')
-center_window(600, 1000, window)
+center_window(600, 400, window)
 butt.place(x=80, y=25)
 rules_butt.place(x=80, y=175)
 label.place(x=75, y=800)
 window.configure()
-window.title("Морской boy")
+window.title("Морской бой")
 window.mainloop()
