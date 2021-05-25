@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox, font
 import pygame
 
+
 allpairs = []
 pointsforships = []
 toCheck = []
@@ -22,7 +23,7 @@ for row in range(10):
 WIDTH = 55
 HEIGHT = 55
 GREEN = (0, 255, 0)
-
+SHIPCOL = (106,90,205)
 
 def points(x):
   res=[]
@@ -71,7 +72,7 @@ class ShipASAS(pygame.sprite.Sprite):
             self.image = pygame.Surface(((height) * n + (n - 1) * 5, width))
         elif asym == 2:
             self.image = pygame.Surface((width, (height) * n + (n - 1) * 5))
-        self.image.fill(GREEN)
+        self.image.fill(SHIPCOL)
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
@@ -97,13 +98,14 @@ class ShipASAS(pygame.sprite.Sprite):
 
 
 # image = pygame.image.load("подпись.png")
-
+color = GREEN
 
 pygame.init()
 
 WHITE = (255, 255, 255)
-
+BLUE = (0, 0, 255)
 RED = (255, 0, 0)
+BLACK = (0,0,0)
 
 WINDOW_SIZE = [1500, 800]
 screen_person = pygame.display.set_mode(WINDOW_SIZE)
@@ -114,8 +116,8 @@ rectangle_draging = False
 
 # This sets the margin between each cell
 MARGIN = 5
-
-# rectangle = pygame.rect.Rect(300, 000, WIDTH,HEIGHT)
+color1 = RED
+rectangle = pygame.rect.Rect(1,1,100,50)
 ship4 = ShipASAS(HEIGHT, WIDTH, 4, 800, 300, 2)
 # ship4 = ShipASAS(HEIGHT,WIDTH,4,0,0,2)
 # print(ship4.rect.bottomright)
@@ -209,49 +211,74 @@ while running:
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
+                allpairs = []
                 for ship in ship_sprites:
                     allpairs.append(ship.extreme_points())
                 #print(allpairs)
                 pointsforships = points(allpairs)
                 toCheck = flatten_lvl_1(pointsforships)
-                finalToCheck = set(tuple(row) for row in toCheck)
+                flag2 = False
+
+                for i in toCheck:
+                    if i[0] >9 or i[1]>9 or i[0]<0 or i[1]<0:
+                        flag2 = True
+                        break
+                if flag2:
+                    finalToCheck = [1]
+
+                else:
+                    finalToCheck = set(tuple(row) for row in toCheck)
+                #print(toCheck)
+                print("-------------------")
 
                 if len(finalToCheck) < len(toCheck):
-                    pass #Ошибка, поменйте раположение
+                    color1 = RED
+                    #pass #Ошибка, поменйте раположение
+                    print(finalToCheck)
+                    print(toCheck)
 
                 elif len(finalToCheck) == len(toCheck):
                 #Заполняем сетку 1 где поинты, используем инфу из toCheck
                     for point in toCheck:
                         grid_for_shot[point[0]][point[1]] = 1
-
+                        color1 = GREEN
                     finalGrid = list(map(list,[grid_for_shot]+[pointsforships]))
                 print(finalGrid)
+                print(finalToCheck)
+                print(toCheck)
+                print(len(toCheck))
+                print(len(finalToCheck))
                     #Потом объединяем сетку и pointsforships
                 #print(toCheck)
                 #print(grid_for_shot)
 
 
-
     screen_person.fill(WHITE)
+    pygame.draw.rect(screen_person, color1, (10, 10, 100, 50))
 
     for row in range(10):
         for column in range(10):
-            color = RED
+            color = BLACK
             pygame.draw.rect(screen_person,
-                             color,
+                             BLACK,
                              [(MARGIN + WIDTH) * column + MARGIN + 100,
                               (MARGIN + HEIGHT) * row + MARGIN + 100,
                               WIDTH,
                               HEIGHT])
 
-    #   pygame.draw.rect(screen_person, GREEN, rectangle)
+    pygame.draw.rect(screen_person, BLACK,
+                     pygame.Rect(100, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
+    #pygame.draw.rect(screen_person, GREEN, rectangle)
     for ship in ship_sprites:
         screen_person.blit(ship.image, ship.rect)
+
     # screen_person.blit(ship2.image,ship2.rect)
     # screen_person.blit(ship3.image,ship3.rect)
     # screen_person.blit(ship4.image,ship4.rect)
     # screen_person.blit(ship5.image,ship5.rect)
     pygame.display.flip()
+
+
 
 pygame.display.flip()
 pygame.quit()
