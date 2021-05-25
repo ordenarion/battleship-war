@@ -2,7 +2,7 @@ import pygame
 from tkinter import *
 from tkinter import messagebox, font
 import random
-
+import time
 
 def right_coordinates(x, y):
     return x > -1 and x < 10 and y > -1 and y < 10
@@ -183,13 +183,16 @@ def sea_battle():
                               (MARGIN + HEIGHT) * row + MARGIN + 100,
                               WIDTH,
                               HEIGHT])
+
+    hp_cpu = 2
+    hp_user = 2
     # -------- Main Program Loop -----------
     while not done:
 
 
 
         label.configure(text=None)
-        hp = 3
+
         score = 0
 
 
@@ -235,21 +238,9 @@ def sea_battle():
                     elif grid[row][column] == -1 and sample[row][column] == 1:
                         color = RED
                         score += 1
-                        hp -= 1
+                        hp_cpu -= 1
 
-                        if hp == 0:
-                                # Tk().wm_withdraw()  # to hide the main window
-                                # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
-                                # label.configure(text=f"{score}")
-                            done = True
-                            res = Tk()
-                            center_window(500,500,res)
-                            result = Label(res,text = f"Поздравляю, Вы победили, Ваши очки: {score}",font=myFont)
-                            quit_butt = Button(res,text = "Выход",command = quit,font=myFont)
 
-                            result.pack()
-                            quit_butt.pack()
-                            res.mainloop()
 
                     pygame.draw.rect(screen_person,
                                      color,
@@ -273,7 +264,23 @@ def sea_battle():
         # grid_cpu[i][j]=-1
 
         if i % 2 == 1:
-            if curr == []:
+            if curr != []:
+                coord = random.choice(curr)
+                grid_cpu[coord[0]][coord[1]] = -1
+                next_curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
+                if next_curr == "miss":
+                    curr.remove(coord)
+                    cpu_pos.remove(coord)
+                    cpu_miss = True
+                elif next_curr == "destroyed":
+                    curr = []
+                    cpu_hit = True
+                elif next_curr == "alive but no list":
+                    curr.remove(coord)
+                    cpu_pos.remove(coord)
+                    cpu_hit = True
+
+            elif curr == []:
                 coord = random.choice(cpu_pos)
                 while grid_cpu_to_attack[coord[0]][coord[1]]<0:
                     cpu_pos.remove(coord)
@@ -288,20 +295,6 @@ def sea_battle():
                     curr = []
                     cpu_hit = True
                 elif type(curr) == list and curr != []:
-                    cpu_hit = True
-
-            elif curr != []:
-                coord = random.choice(curr)
-                grid_cpu[coord[0]][coord[1]] = -1
-                next_curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
-                if next_curr == "miss":
-                    curr.remove(coord)
-                    cpu_miss = True
-                elif next_curr == "destroyed":
-                    curr = []
-                    cpu_hit = True
-                elif next_curr == "alive but no list":
-                    curr.remove(coord)
                     cpu_hit = True
 
             # curr_pos = random.choice(cpu_pos)
@@ -320,8 +313,10 @@ def sea_battle():
                     color = WHITE
                     if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -3:
                         color = BLUE
+                       #
                     elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -2:
                         color = GREEN
+                        #time.sleep(1)
                     pygame.draw.rect(screen_person,
                                      color,
                                      [(MARGIN + WIDTH) * column + MARGIN + 900,
@@ -332,9 +327,41 @@ def sea_battle():
             if cpu_hit:
                 cpu_hit = False
                 i += 2
+                hp_user -= 1
+                if hp_user == 0:
+
+                    res = Tk()
+                    center_window(500, 100, res)
+                    result = Label(res,text = f"К сожалению, Вы проиграли", font=myFont)
+                    text = f"К сожалению, Вы проиграли"
+                    quit_butt = Button(res, text="Выход", command=quit, font=myFont)
+
+                    result.pack()
+                    quit_butt.pack()
+                    res.mainloop()
+                    done = True
             elif cpu_miss:
                 cpu_miss = False
                 i += 1
+
+            if hp_cpu < 0:
+                # Tk().wm_withdraw()  # to hide the main window
+                # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
+                # label.configure(text=f"{score}")
+                res = Tk()
+                center_window(500, 100, res)
+                result = Label(res, text=f"Поздравляю, Вы победили, Ваши очки: {score}", font=myFont)
+                quit_butt = Button(res, text="Выход", command=quit, font=myFont)
+
+                result.pack()
+                quit_butt.pack()
+                res.mainloop()
+                done = True
+
+            print(hp_user)
+            print("------------")
+            print(hp_cpu)
+
             # Limit to 60 frames per second
             clock.tick(60)
 

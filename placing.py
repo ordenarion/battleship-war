@@ -255,6 +255,8 @@ while running:
 
     screen_person.fill(WHITE)
     pygame.draw.rect(screen_person, color1, (10, 10, 100, 50))
+    pygame.draw.rect(screen_person, BLACK, (10, 10, 100, 50),2)
+
 
     for row in range(10):
         for column in range(10):
