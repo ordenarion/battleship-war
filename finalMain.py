@@ -715,6 +715,7 @@ def randomUserGrid():
             if direction[index] == 0:
                 if x - 3 >= 0:
                     for i in range(4):
+
                         ships[0].append([x - i, y, 1])
                         usergrid[x - i][y] = 1
                         for j1 in range(-1, 2):
@@ -731,6 +732,7 @@ def randomUserGrid():
                 if x + 3 <= 9:
 
                     for i in range(4):
+
                         ships[0].append([x + i, y, 1])
                         usergrid[x + i][y] = 1
                         for j1 in range(-1, 2):
@@ -746,6 +748,7 @@ def randomUserGrid():
             elif direction[index] == 2:
                 if y - 3 >= 0:
                     for i in range(4):
+
                         ships[0].append([x, y - i, 1])
                         usergrid[x][y - i] = 1
                         for j1 in range(-1, 2):
@@ -761,6 +764,7 @@ def randomUserGrid():
             elif direction[index] == 3:
                 if y + 3 <= 9:
                     for i in range(4):
+
                         ships[0].append([x, y + i, 1])
                         usergrid[x][y + i] = 1
                         for j1 in range(-1, 2):
@@ -774,9 +778,11 @@ def randomUserGrid():
                     direction.remove(3)
 
         if notplaced:
-            wrongsquares.append((x, y))
+
             if squares.count((x, y)) > 0:
                 squares.remove((x, y))
+                wrongsquares.append((x, y))
+
     notplaced = True
     for i in range(len(wrongsquares)):
         if usergrid[wrongsquares[i][0]][wrongsquares[i][1]] == 0:
@@ -792,6 +798,7 @@ def randomUserGrid():
             if direction[index] == 0:
                 if x - 2 >= 0 and usergrid[x - 1][y] == 0 and usergrid[x - 2][y] == 0:
                     for i in range(3):
+
                         ships[2].append([x - i, y, 1])
                         usergrid[x - i][y] = 1
                         for j1 in range(-1, 2):
@@ -807,6 +814,7 @@ def randomUserGrid():
             elif direction[index] == 1:
                 if x + 2 <= 9 and usergrid[x + 1][y] == 0 and usergrid[x + 2][y] == 0:
                     for i in range(3):
+
                         ships[2].append([x + i, y, 1])
                         usergrid[x + i][y] = 1
                         for j1 in range(-1, 2):
@@ -822,6 +830,7 @@ def randomUserGrid():
             elif direction[index] == 2:
                 if y - 2 >= 0 and usergrid[x][y - 1] == 0 and usergrid[x][y - 2] == 0:
                     for i in range(3):
+
                         ships[2].append([x, y - i, 1])
                         usergrid[x][y - i] = 1
                         for j1 in range(-1, 2):
@@ -837,6 +846,7 @@ def randomUserGrid():
             elif direction[index] == 3:
                 if y + 2 <= 9 and usergrid[x][y + 1] == 0 and usergrid[x][y + 2] == 0:
                     for i in range(3):
+
                         ships[2].append([x, y + i, 1])
                         usergrid[x][y + i] = 1
                         for j1 in range(-1, 2):
@@ -850,9 +860,10 @@ def randomUserGrid():
                     direction.remove(3)
 
         if notplaced:
-            wrongsquares.append((x, y))
+
             if squares.count((x, y)) > 0:
                 squares.remove((x, y))
+                wrongsquares.append((x, y))
 
     notplaced = True
     for i in range(len(wrongsquares)):
@@ -869,6 +880,7 @@ def randomUserGrid():
             if direction[index] == 0:
                 if x - 2 >= 0 and usergrid[x - 1][y] == 0 and usergrid[x - 2][y] == 0:
                     for i in range(3):
+
                         ships[1].append([x - i, y, 1])
                         usergrid[x - i][y] = 1
                         for j1 in range(-1, 2):
@@ -884,6 +896,7 @@ def randomUserGrid():
             elif direction[index] == 1:
                 if x + 2 <= 9 and usergrid[x + 1][y] == 0 and usergrid[x + 2][y] == 0:
                     for i in range(3):
+
                         ships[1].append([x + i, y, 1])
                         usergrid[x + i][y] = 1
                         for j1 in range(-1, 2):
@@ -899,6 +912,7 @@ def randomUserGrid():
             elif direction[index] == 2:
                 if y - 2 >= 0 and usergrid[x][y - 1] == 0 and usergrid[x][y - 2] == 0:
                     for i in range(3):
+
                         ships[1].append([x, y - i, 1])
                         usergrid[x][y - i] = 1
                         for j1 in range(-1, 2):
@@ -914,6 +928,7 @@ def randomUserGrid():
             elif direction[index] == 3:
                 if y + 2 <= 9 and usergrid[x][y + 1] == 0 and usergrid[x][y + 2] == 0:
                     for i in range(3):
+
                         ships[1].append([x, y + i, 1])
                         usergrid[x][y + i] = 1
                         for j1 in range(-1, 2):
@@ -927,9 +942,10 @@ def randomUserGrid():
                     direction.remove(3)
 
         if notplaced:
-            wrongsquares.append((x, y))
+
             if squares.count((x, y)) > 0:
                 squares.remove((x, y))
+                wrongsquares.append((x, y))
 
     notplaced = True
     for i in range(len(wrongsquares)):
@@ -946,6 +962,7 @@ def randomUserGrid():
             if direction[index] == 0:
                 if x - 1 >= 0 and usergrid[x - 1][y] == 0:
                     for i in range(2):
+
                         ships[3].append([x - i, y, 1])
                         usergrid[x - i][y] = 1
                         for j1 in range(-1, 2):
@@ -961,6 +978,7 @@ def randomUserGrid():
             elif direction[index] == 1:
                 if x + 1 <= 9 and usergrid[x + 1][y] == 0:
                     for i in range(2):
+
                         ships[3].append([x + i, y, 1])
                         usergrid[x + i][y] = 1
                         for j1 in range(-1, 2):
@@ -976,6 +994,7 @@ def randomUserGrid():
             elif direction[index] == 2:
                 if y - 1 >= 0 and usergrid[x][y - 1] == 0 == 0:
                     for i in range(2):
+
                         ships[3].append([x, y - i, 1])
                         usergrid[x][y - i] = 1
                         for j1 in range(-1, 2):
@@ -991,6 +1010,7 @@ def randomUserGrid():
             elif direction[index] == 3:
                 if y + 1 <= 9 and usergrid[x][y + 1] == 0:
                     for i in range(2):
+
                         ships[3].append([x, y + i, 1])
                         usergrid[x][y + i] = 1
                         for j1 in range(-1, 2):
@@ -1004,9 +1024,10 @@ def randomUserGrid():
                     direction.remove(3)
 
         if notplaced:
-            wrongsquares.append((x, y))
+
             if squares.count((x, y)) > 0:
                 squares.remove((x, y))
+                wrongsquares.append((x, y))
 
     notplaced = True
     for i in range(len(wrongsquares)):
@@ -1023,6 +1044,7 @@ def randomUserGrid():
             if direction[index] == 0:
                 if x - 1 >= 0 and usergrid[x - 1][y] == 0:
                     for i in range(2):
+
                         ships[4].append([x - i, y, 1])
                         usergrid[x - i][y] = 1
                         for j1 in range(-1, 2):
@@ -1038,6 +1060,7 @@ def randomUserGrid():
             elif direction[index] == 1:
                 if x + 1 <= 9 and usergrid[x + 1][y] == 0:
                     for i in range(2):
+
                         ships[4].append([x + i, y, 1])
                         usergrid[x + i][y] = 1
                         for j1 in range(-1, 2):
@@ -1053,6 +1076,7 @@ def randomUserGrid():
             elif direction[index] == 2:
                 if y - 1 >= 0 and usergrid[x][y - 1] == 0 == 0:
                     for i in range(2):
+
                         ships[4].append([x, y - i, 1])
                         usergrid[x][y - i] = 1
                         for j1 in range(-1, 2):
@@ -1068,6 +1092,7 @@ def randomUserGrid():
             elif direction[index] == 3:
                 if y + 1 <= 9 and usergrid[x][y + 1] == 0:
                     for i in range(2):
+
                         ships[4].append([x, y + i, 1])
                         usergrid[x][y + i] = 1
                         for j1 in range(-1, 2):
@@ -1081,9 +1106,10 @@ def randomUserGrid():
                     direction.remove(3)
 
         if notplaced:
-            wrongsquares.append((x, y))
+
             if squares.count((x, y)) > 0:
                 squares.remove((x, y))
+                wrongsquares.append((x, y))
 
     notplaced = True
     for i in range(len(wrongsquares)):
@@ -1100,6 +1126,7 @@ def randomUserGrid():
             if direction[index] == 0:
                 if x - 1 >= 0 and usergrid[x - 1][y] == 0:
                     for i in range(2):
+
                         ships[5].append([x - i, y, 1])
                         usergrid[x - i][y] = 1
                         for j1 in range(-1, 2):
@@ -1115,6 +1142,7 @@ def randomUserGrid():
             elif direction[index] == 1:
                 if x + 1 <= 9 and usergrid[x + 1][y] == 0:
                     for i in range(2):
+
                         ships[5].append([x + i, y, 1])
                         usergrid[x + i][y] = 1
                         for j1 in range(-1, 2):
@@ -1130,6 +1158,7 @@ def randomUserGrid():
             elif direction[index] == 2:
                 if y - 1 >= 0 and usergrid[x][y - 1] == 0 == 0:
                     for i in range(2):
+
                         ships[5].append([x, y - i, 1])
                         usergrid[x][y - i] = 1
                         for j1 in range(-1, 2):
@@ -1145,6 +1174,7 @@ def randomUserGrid():
             elif direction[index] == 3:
                 if y + 1 <= 9 and usergrid[x][y + 1] == 0:
                     for i in range(2):
+
                         ships[5].append([x, y + i, 1])
                         usergrid[x][y + i] = 1
                         for j1 in range(-1, 2):
@@ -1158,22 +1188,32 @@ def randomUserGrid():
                     direction.remove(3)
 
         if notplaced:
-            wrongsquares.append((x, y))
+
             if squares.count((x, y)) > 0:
                 squares.remove((x, y))
+                wrongsquares.append((x, y))
 
     notplaced = True
     for i in range(len(wrongsquares)):
         if usergrid[wrongsquares[i][0]][wrongsquares[i][1]] == 0:
             squares.append(wrongsquares[i])
-    wrongsquares = []
 
-    for i in range(4):
-        sh = random.randint(0, len(squares) - 1)
-        (x, y) = squares[sh]
-        usergrid[x][y] = 1
-        ships[6 + i].append([x, y, 1])
-        squares.remove((x, y))
+    i=0
+    while i<4:
+         sh = random.randint(0, len(squares) - 1)
+         (x, y) = squares[sh]
+         if usergrid[x][y]!=1:
+             i+=1
+             usergrid[x][y] = 1
+             ships[6 + i-1].append([x, y, 1])
+             for j1 in range(-1, 2):
+                 for j2 in range(-1, 2):
+                     if right_coordinates(x + j1, y + j2) and usergrid[x + j1][y + j2] != 1:
+                        usergrid[x + j1][y + j2] = -2
+                        if squares.count((x + j1, y + j2)) > 0:
+                            squares.remove((x + j1, y + j2))
+         else:
+             squares.remove((x,y))
 
     for i in range(10):
         for j in range(10):
@@ -1196,10 +1236,11 @@ def prepare_to_place():
     window1 = Tk()
     center_window(600, 400, window1)
     myFont1 = font.Font(size=70)
+    myFont = font.Font(size=42)
     window1.title("Как расставить корабли?")
-    label1 = Label(window1,font = myFont ,text="Вам предстоить выбрать, как разместить корабли перед сражением:")
-    solo_button = Button(window1,text = "Самостоятельно",font = myFont1,bg='#0052cc', fg='#ffffff',command = placing )
-    random_button = Button(window1,text = "Довериться вере случая",font = myFont1,bg='#0052cc', fg='#ffffff',command = randomUserGrid )
+    label1 = Label(window1,font = myFont ,text="    Вам предстоить выбрать,\n как разместить корабли перед сражением:")
+    solo_button = Button(window1,text = "Самостоятельно",font = myFont,bg='#0052cc', fg='#ffffff',command = placing )
+    random_button = Button(window1,text = "Довериться воле случая",font = myFont,bg='#0052cc', fg='#ffffff',command = randomUserGrid )
     solo_button.place(x=65, y=50)
     random_button.place(x=350, y=50)
     label1.place(x=50, y=20)
