@@ -324,6 +324,8 @@ def sea_battle(user_ships):
         # print(i,j)
         # grid_cpu[i][j]=-1
 
+
+
         if i % 2 == 1:
             if curr != []:
                 coord = random.choice(curr)
