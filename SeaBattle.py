@@ -87,3 +87,4 @@ def optimal_start_position():
     else:
         return optimal_position3(x,ships)
 
+print(optimal_start_position())

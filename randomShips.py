@@ -554,7 +554,8 @@ def randomShip():
                     f = randomUserGrid()
                     toDraw = f[0]
             elif event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                return f
 
 
         screen_person.fill(WHITE)
@@ -581,4 +582,4 @@ def randomShip():
     pygame.display.flip()
     pygame.quit()
 
-randomShip()
+print(randomShip())
