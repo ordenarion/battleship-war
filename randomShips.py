@@ -540,16 +540,12 @@ def randomShip():
     HEIGHT = 55
     MARGIN = 5
 
-    WINDOW_SIZE = [1500, 800]
+    WINDOW_SIZE = [800, 800]
     screen_person = pygame.display.set_mode(WINDOW_SIZE)
-    pygame.display.set_caption(
-        "Начальное размещение кораблей: после размещения нажмите кнопку ""Стрелка вверх"". Если статус бар горит Красным - Вам следует переставить Ваши корабли более корректно, если Зеленым - можете закрывать окно ")
-
+    pygame.display.set_caption("Случайная расстановка кораблей. Для повторного перевыбора нажмите Стрелку вверх, а после закройте окно")
     running = True
     f = randomUserGrid()
     toDraw = f[0]
-    print(f[1])
-    print(f[2])
     while running:
 
         for event in pygame.event.get():
@@ -557,9 +553,6 @@ def randomShip():
                 if event.key == pygame.K_UP:
                     f = randomUserGrid()
                     toDraw = f[0]
-                    print(f[1])
-                    print(f[2])
-                    pass
             elif event.type == pygame.QUIT:
                 running = False
 
