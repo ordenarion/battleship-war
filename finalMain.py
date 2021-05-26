@@ -6,11 +6,99 @@ import operator
 import time
 
 
-
 def right_coordinates(x, y):
     return x > -1 and x < 10 and y > -1 and y < 10
 
+state0 = 0
 state1 = 1
+
+def optimal_position1(x,ships):
+    for i in range(4):
+        x[i][0]=state1
+        ships[0].append([i,0,state1])
+    for i in range(2):
+        x[i+5][0]=state1
+        ships[1].append([i+5,0,state1])
+    for i in range(2):
+        x[i+8][0]=state1
+        ships[2].append([i+8,0,state1])
+    for i in range(3):
+        x[i][2]=state1
+        ships[3].append([i, 2, state1])
+    for i in range(3):
+        x[i+4][2]=state1
+        ships[4].append([i + 4, 2, state1])
+    for i in range(2):
+        x[i+8][2]=state1
+        ships[5].append([i + 8, 2, state1])
+    for i in range(4):
+        j=random.randint(4,9)
+        x[2*i][j]=state1
+        ships[6+i].append([2*i,j,state1])
+    return [x,ships]
+
+def optimal_position2(x,ships):
+    for i in range(4):
+        x[i][0]=state1
+        ships[0].append( [i, 0, state1])
+    for i in range(3):
+        x[i+5][0]=state1
+        ships[1].append([i+5,0,state1])
+    for i in range(2):
+        x[9][i]=state1
+        ships[2].append([9,i,state1])
+    for i in range(3):
+        x[0][i+2]=state1
+        ships[3].append([0,i+2,state1])
+    for i in range(2):
+        x[0][i+6]=state1
+        ships[4].append([0,i+6,state1])
+    for i in range(2):
+        x[i][9]=state1
+        ships[5].append([i,9,state1])
+    for i in range(4):
+        j=random.randint(3,9)
+        x[2*i+3][j]=state1
+        ships[6+i].append([2*i+3,j,state1])
+    return [x,ships]
+
+def optimal_position3(x,ships):
+    for i in range(4):
+        x[i][0]=state1
+        ships[0].append([i,0,state1])
+    for i in range(2):
+        x[i+5][0]=state1
+        ships[1].append([i+5,0,state1])
+    for i in range(2):
+        x[i+8][0]=state1
+        ships[2].append([i+8,0,state1])
+    for i in range(3):
+        x[i][9]=state1
+        ships[3].append([i,9,state1])
+    for i in range(2):
+        x[i+4][9]=state1
+        ships[4].append([i+4,9,state1])
+    for i in range(3):
+        x[i+7][9]=state1
+        ships[5].append([i+7,9,state1])
+    for i in range(4):
+        j=random.randint(2,7)
+        x[2*i][j]=state1
+        ships[6+i].append([2*i,j,state1])
+    return [x,ships]
+
+def optimal_start_position():
+    x=[[state0 for i in range(10)] for j in range(10)]
+    ships=[[] for i in range(10)]
+    num=random.randint(1,3)
+    if num==1:
+        return optimal_position1(x,ships)
+    elif num==2:
+        return optimal_position2(x,ships)
+    else:
+        return optimal_position3(x,ships)
+
+
 def shot(list, ships, x, y):
     if list[x][y] != 1:
         list[x][y] = -3
@@ -72,7 +160,8 @@ def shot(list, ships, x, y):
         else:
             return positions
 
-def sea_battle():
+
+def sea_battle(user_ships):
     # Define some colors
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
@@ -81,14 +170,13 @@ def sea_battle():
     BLUE = (120, 171, 235)
     BG = (110, 131, 156)
     # This sets the WIDTH and HEIGHT of each grid location
-    WIDTH =40
-    HEIGHT =40
+    WIDTH = 40
+    HEIGHT = 40
 
     # This sets the margin between each cell
     MARGIN = 5
 
-    cpu_pos = [[x,y] for x in range(10) for y in range(10)]
-
+    cpu_pos = [[x, y] for x in range(10) for y in range(10)]
 
     # Create a 2 dimensional array. A two dimensional
     # array is simply a list of lists.
@@ -100,10 +188,7 @@ def sea_battle():
         for column in range(10):
             grid[row].append(0)  # Append a cell
     # grid = [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
-    sample = [[1, 0, 0, 1, 1, 0, 1, 1, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    sample = optimal_start_position()[0]
 
     grid_cpu = []
     for row in range(10):
@@ -113,27 +198,9 @@ def sea_battle():
         for column in range(10):
             grid_cpu[row].append(0)  # Append a cell
     # Initialize pygame
-    f = [[[1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 1]],
-         [[[0, 0, 1], [1, 0, 1], [2, 0, 1], [3, 0, 1]],
-          [[5, 0, 1], [6, 0, 1]],
-          [[8, 0, 1], [9, 0, 1]],
-          [[0, 9, 1], [1, 9, 1], [2, 9, 1]],
-          [[4, 9, 1], [5, 9, 1]],
-          [[7, 9, 1], [8, 9, 1], [9, 9, 1]],
-          [[0, 5, 1]],
-          [[2, 5, 1]],
-          [[4, 4, 1]],
-          [[6, 3, 1]]]]
-    grid_cpu_to_attack =f[0] #[[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
+    f = user_ships
+    grid_cpu_to_attack = f[
+        0]  # [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
 
     curr = []
     pygame.init()
@@ -143,15 +210,14 @@ def sea_battle():
     screen_person = pygame.display.set_mode(WINDOW_SIZE)
     screen_cpu = pygame.display.set_mode(WINDOW_SIZE)
     # Set title of screen
-    pygame.display.set_caption("Основной этап: В левом поле стреляет игрок, В правом поле стреляет компьютер. По центру отображается выбранная пользователем расстановка кораблей")
+    pygame.display.set_caption(
+        "Основной этап: В левом поле стреляет игрок, В правом поле стреляет компьютер. По центру отображается выбранная пользователем расстановка кораблей")
 
     # Loop until the user clicks the close button.
     done = False
 
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
-
-
 
     screen_person.fill(BLACK)
     pygame.draw.rect(screen_person, WHITE,
@@ -187,18 +253,12 @@ def sea_battle():
                               WIDTH,
                               HEIGHT])
 
-    hp_cpu = 2
-    hp_user = 2
-    score = 100
+    hp_user = 20
     # -------- Main Program Loop -----------
     while not done:
-
-
-
-#        label.configure(text=None)
-
-
-
+        score = 10
+        hp_cpu = 20
+        #        label.configure(text=None)
 
         if i % 2 == 0:
 
@@ -210,10 +270,10 @@ def sea_battle():
                     # User clicks the mouse. Get the position
                     pos = pygame.mouse.get_pos()
                     # Change the x/y screen coordinates to grid coordinates
-                    column = pos[0] // (WIDTH + MARGIN)-2
-                    row = pos[1] //(HEIGHT + MARGIN)-2
+                    column = pos[0] // (WIDTH + MARGIN) - 2
+                    row = pos[1] // (HEIGHT + MARGIN) - 2
                     print(pos)
-                    if column >9 or row >9:
+                    if column > 9 or row > 9:
                         pass
                     else:
                         grid[row][column] = -1
@@ -226,7 +286,7 @@ def sea_battle():
                         print(i)
 
                         # Set that location to one
-                       # grid[row][column] = -1
+                    # grid[row][column] = -1
 
                     print("Click ", pos, "Grid coordinates: ", row, column)
 
@@ -244,14 +304,12 @@ def sea_battle():
                         score += 5
                         hp_cpu -= 1
 
-
-
                     pygame.draw.rect(screen_person,
                                      color,
-                                     [(MARGIN + WIDTH) * column + MARGIN+100,
-                                          (MARGIN + HEIGHT) * row + MARGIN+100,
-                                          WIDTH,
-                                          HEIGHT])
+                                     [(MARGIN + WIDTH) * column + MARGIN + 100,
+                                      (MARGIN + HEIGHT) * row + MARGIN + 100,
+                                      WIDTH,
+                                      HEIGHT])
             # if user_hit:
             #     i += 2
             #     user_hit = False
@@ -259,7 +317,6 @@ def sea_battle():
             #     i += 1
             #     user_miss = False
             #
-
 
         # pygame.time.wait(10)
         # i = random.randint(0,9)
@@ -271,7 +328,7 @@ def sea_battle():
             if curr != []:
                 coord = random.choice(curr)
                 grid_cpu[coord[0]][coord[1]] = -1
-                next_curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
+                next_curr = shot(grid_cpu_to_attack, f[1], coord[0], coord[1])
                 if next_curr == "miss":
                     curr.remove(coord)
                     cpu_pos.remove(coord)
@@ -286,12 +343,12 @@ def sea_battle():
 
             elif curr == []:
                 coord = random.choice(cpu_pos)
-                while grid_cpu_to_attack[coord[0]][coord[1]]<0:
+                while grid_cpu_to_attack[coord[0]][coord[1]] < 0:
                     cpu_pos.remove(coord)
                     coord = random.choice(cpu_pos)
                 grid_cpu[coord[0]][coord[1]] = -1
 
-                curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
+                curr = shot(grid_cpu_to_attack, f[1], coord[0], coord[1])
                 if curr == "miss":
                     curr = []
                     cpu_miss = True
@@ -317,10 +374,10 @@ def sea_battle():
                     color = WHITE
                     if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -3:
                         color = BLUE
-                       #
+                    #
                     elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -2:
                         color = GREEN
-                        #time.sleep(1)
+                        # time.sleep(1)
                     pygame.draw.rect(screen_person,
                                      color,
                                      [(MARGIN + WIDTH) * column + MARGIN + 900,
@@ -333,10 +390,9 @@ def sea_battle():
                 i += 2
                 hp_user -= 1
                 if hp_user == 0:
-
                     res = Tk()
                     center_window(500, 100, res)
-                    result = Label(res,text = f"К сожалению, Вы проиграли", font=myFont)
+                    result = Label(res, text=f"К сожалению, Вы проиграли", font=myFont)
                     text = f"К сожалению, Вы проиграли"
                     quit_butt = Button(res, text="Выход", command=quit, font=myFont)
 
@@ -348,19 +404,19 @@ def sea_battle():
                 cpu_miss = False
                 i += 1
 
-            if hp_cpu < 0:
+        if hp_cpu <= 0:
                 # Tk().wm_withdraw()  # to hide the main window
                 # messagebox.showinfo("Конец игры", f"Поздравляю, Вы победили, ваши очки: {score}")
                 # label.configure(text=f"{score}")
-                res = Tk()
-                center_window(500, 100, res)
-                result = Label(res, text=f"Поздравляю, Вы победили, Ваши очки: {score}", font=myFont)
-                quit_butt = Button(res, text="Выход", command=quit, font=myFont)
+            res = Tk()
+            center_window(500, 100, res)
+            result = Label(res, text=f"Поздравляю, Вы победили, Ваши очки: {score}", font=myFont)
+            quit_butt = Button(res, text="Выход", command=quit, font=myFont)
 
-                result.pack()
-                quit_butt.pack()
-                res.mainloop()
-                done = True
+            result.pack()
+            quit_butt.pack()
+            res.mainloop()
+            done = True
 
             print(hp_user)
             print("------------")
@@ -385,7 +441,6 @@ def sea_battle():
                                   20,
                                   20])
 
-
         # Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
     pygame.quit()
@@ -407,6 +462,7 @@ def start_rules():
     center_window(600, 400, rule)
     rule.title("Правила игры")
     rule.mainloop()
+
 
 def placing():
     allpairs = []
@@ -551,7 +607,7 @@ def placing():
     #                           (MARGIN + HEIGHT) * row + MARGIN + 100,
     #                           WIDTH,
     #                           HEIGHT])
-
+    curr_ship = ship14
     while running:
         # ship1.update()
         for event in pygame.event.get():
@@ -656,8 +712,8 @@ def placing():
             if event.type == pygame.QUIT and color1 == GREEN:
                 running = False
                 pygame.quit()
-                sea_battle()
-                return finalGrid
+                sea_battle(finalGrid)
+
 
             elif event.type == pygame.QUIT and color1 == RED:
                 running = False
@@ -691,11 +747,7 @@ def placing():
     pygame.display.flip()
     pygame.quit()
 
-import random
 
-
-def right_coordinates(x, y):
-    return x > -1 and x < 10 and y > -1 and y < 10
 
 
 def randomUserGrid():
@@ -1198,22 +1250,22 @@ def randomUserGrid():
         if usergrid[wrongsquares[i][0]][wrongsquares[i][1]] == 0:
             squares.append(wrongsquares[i])
 
-    i=0
-    while i<4:
-         sh = random.randint(0, len(squares) - 1)
-         (x, y) = squares[sh]
-         if usergrid[x][y]!=1:
-             i+=1
-             usergrid[x][y] = 1
-             ships[6 + i-1].append([x, y, 1])
-             for j1 in range(-1, 2):
-                 for j2 in range(-1, 2):
-                     if right_coordinates(x + j1, y + j2) and usergrid[x + j1][y + j2] != 1:
+    i = 0
+    while i < 4:
+        sh = random.randint(0, len(squares) - 1)
+        (x, y) = squares[sh]
+        if usergrid[x][y] != 1:
+            i += 1
+            usergrid[x][y] = 1
+            ships[6 + i - 1].append([x, y, 1])
+            for j1 in range(-1, 2):
+                for j2 in range(-1, 2):
+                    if right_coordinates(x + j1, y + j2) and usergrid[x + j1][y + j2] != 1:
                         usergrid[x + j1][y + j2] = -2
                         if squares.count((x + j1, y + j2)) > 0:
                             squares.remove((x + j1, y + j2))
-         else:
-             squares.remove((x,y))
+        else:
+            squares.remove((x, y))
 
     for i in range(10):
         for j in range(10):
@@ -1223,41 +1275,104 @@ def randomUserGrid():
     return [usergrid, ships]
 
 
-pole = randomUserGrid()[0]
-korabl = randomUserGrid()[1]
+def randomShip():
+    pygame.init()
+
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    SHIPCOL = (106, 90, 205)
+    WIDTH = 55
+    HEIGHT = 55
+    MARGIN = 5
+
+    WINDOW_SIZE = [800, 800]
+    screen_person = pygame.display.set_mode(WINDOW_SIZE)
+    pygame.display.set_caption(
+        "Случайная расстановка кораблей. Для повторного перевыбора нажмите Стрелку вверх, а после закройте окно")
+    running = True
+    f = randomUserGrid()
+    toDraw = f[0]
+    while running:
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    f = randomUserGrid()
+                    toDraw = f[0]
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                return f
+
+        screen_person.fill(WHITE)
+
+        for row in range(10):
+            for column in range(10):
+                if toDraw[row][column] == 0:
+                    color = BLACK
+                else:
+                    color = SHIPCOL
+                pygame.draw.rect(screen_person,
+                                 color,
+                                 [(MARGIN + WIDTH) * column + MARGIN + 100,
+                                  (MARGIN + HEIGHT) * row + MARGIN + 100,
+                                  WIDTH,
+                                  HEIGHT])
+
+        pygame.draw.rect(screen_person, BLACK,
+                         pygame.Rect(100, 100, (MARGIN + WIDTH) * 10 + MARGIN, (MARGIN + HEIGHT) * 10 + MARGIN), 2)
+
+        pygame.display.flip()
+
+    pygame.display.flip()
+    pygame.quit()
+
+def randomizeShipSelection():
+    f = randomShip()
+    sea_battle(f)
 # for k in range(10):
 #         print(pole[k])
 #
 # for k in range(10):
 #         print(korabl[k])
-#print(randomUserGrid())
+# print(randomUserGrid())
 
 def prepare_to_place():
     window1 = Tk()
+    myFont1 = font.Font(family='Helvetica', size=36, weight='bold')
+    label1 = Label(window1, font=myFont1, text=" Вам предстоить выбрать, как разместить корабли перед сражением:")
+    solo = Button(window1, text="Выбрать самостоятельно", font=myFont1, command=placing, bg='#0052cc',
+                  fg='#ffffff', height=5, width=59)
+    random = Button(window1, text="Довериться воле случая", font=myFont, command=randomizeShipSelection, bg='#0052cc',
+                    fg='#ffffff', height=5, width=59)
     center_window(600, 400, window1)
-    myFont1 = font.Font(size=70)
-    myFont = font.Font(size=42)
-    window1.title("Как расставить корабли?")
-    label1 = Label(window1,font = myFont ,text="    Вам предстоить выбрать,\n как разместить корабли перед сражением:")
-    solo_button = Button(window1,text = "Самостоятельно",font = myFont,bg='#0052cc', fg='#ffffff',command = placing )
-    random_button = Button(window1,text = "Довериться воле случая",font = myFont,bg='#0052cc', fg='#ffffff',command = randomUserGrid )
-    solo_button.place(x=65, y=50)
-    random_button.place(x=350, y=50)
-    label1.place(x=50, y=20)
+    solo.place(x=30, y=100)
+    # solo.configure(font = myFont1)
+    random.place(x=30, y=250)
+    label1.place(x=30, y=50)
+    # center_window(600, 400, window1)
+    # myFont1 = font.Font(size=70)
+    # myFont = font.Font(size=42)
+    # window1.title("Как расставить корабли?")
+    # label1 = Label(window1,font = myFont ,text="    Вам предстоить выбрать,\n как разместить корабли перед сражением:")
+    # solo_button = Button(window1,text = "Самостоятельно",font = myFont,bg='#0052cc', fg='#ffffff',command = placing )
+    # random_button = Button(window1,text = "Довериться воле случая",font = myFont,bg='#0052cc', fg='#ffffff',command = randomUserGrid )
+    # solo_button.place(x=65, y=50)
+    # random_button.place(x=350, y=50)
+    # label1.place(x=50, y=20)
     window1.mainloop()
 
+
 window = Tk()
-#label = Label(text="adasdas")
+# label = Label(text="adasdas")
 
-myFont = font.Font(size=42)
+myFont = font.Font(family='Helvetica', size=36, weight='bold')
 
-butt = Button(text="Начать играть", font = myFont, command=prepare_to_place,bg='#0052cc', fg='#ffffff')
-rules_butt = Button(text="Правила игры", font = myFont, command=start_rules,bg='#0052cc', fg='#ffffff')
+butt = Button(text="Начать играть", font=myFont, command=prepare_to_place, bg='#0052cc', fg='#ffffff')
+rules_butt = Button(text="Правила игры", font=myFont, command=start_rules, bg='#0052cc', fg='#ffffff')
 center_window(600, 400, window)
-butt.place(x=90, y=25)
-rules_butt.place(x=90, y=175)
-#label.place(x=75, y=800)
+butt.place(x=100, y=25)
+rules_butt.place(x=100, y=175)
+# label.place(x=75, y=800)
 window.configure()
 window.title("Морской бой")
 window.mainloop()
-
