@@ -1387,6 +1387,7 @@ def prepare_to_place():
     # solo.configure(font = myFont1)
     random.place(x=30, y=250)
     label1.place(x=30, y=50)
+    window1.title("Сложный выбор")
     # center_window(600, 400, window1)
     # myFont1 = font.Font(size=70)
     # myFont = font.Font(size=42)
