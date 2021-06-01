@@ -254,6 +254,7 @@ def sea_battle(user_ships):
                               HEIGHT])
 
     hp_user = 20
+
     # -------- Main Program Loop -----------
     while not done:
         score = 10
@@ -397,7 +398,7 @@ def sea_battle(user_ships):
                     result = Label(res, text=f"К сожалению, Вы проиграли", font=myFont)
                     text = f"К сожалению, Вы проиграли"
                     quit_butt = Button(res, text="Выход", command=quit, font=myFont)
-
+                    res.title("Какая досада!")
                     result.pack()
                     quit_butt.pack()
                     res.mainloop()
@@ -414,7 +415,7 @@ def sea_battle(user_ships):
             center_window(500, 100, res)
             result = Label(res, text=f"Поздравляю, Вы победили, Ваши очки: {score}", font=myFont)
             quit_butt = Button(res, text="Выход", command=quit, font=myFont)
-
+            res.title("Какая прелесть!")
             result.pack()
             quit_butt.pack()
             res.mainloop()
