@@ -99,6 +99,13 @@ def optimal_start_position():
         return optimal_position3(x,ships)
 
 
+state1 = 1
+
+
+def right_coordinates(x, y):
+    return x > -1 and x < 10 and y > -1 and y < 10
+
+
 def shot(list, ships, x, y):
     if list[x][y] != 1:
         list[x][y] = -3
@@ -114,22 +121,18 @@ def shot(list, ships, x, y):
         if right_coordinates(x + 1, y + 1):
             list[x + 1][y + 1] = -3
         positions = []
-        t1 = False
-        t2 = False
-        t3 = False
-        t4 = False
+
         if right_coordinates(x, y - 1) and list[x][y - 1] > -2:
             positions.append([x, y - 1])
-            t1 = list[x][y - 1] == 1
+
         if right_coordinates(x, y + 1) and list[x][y + 1] > -2:
             positions.append([x, y + 1])
-            t2 = list[x][y + 1] == 1
+
         if right_coordinates(x - 1, y) and list[x - 1][y] > -2:
             positions.append([x - 1, y])
-            t3 = list[x - 1][y] == 1
+
         if right_coordinates(x + 1, y) and list[x + 1][y] > -2:
             positions.append([x + 1, y])
-            t4 = list[x + 1][y] == 1
 
         sh = 0
         while not [x, y, state1] in ships[sh]:
@@ -141,22 +144,11 @@ def shot(list, ships, x, y):
 
         destroyed = sum == -2 * len(ships[sh])
 
-        if len(positions) == 0 and destroyed:
-            return "destroyed"
-        elif (t1 or t2 or t3 or t4) == False and destroyed:
-            if right_coordinates(x, y - 1) and list[x][y - 1] != -2:
-                list[x][y - 1] = -3
-            if right_coordinates(x, y + 1) and list[x][y + 1] != -2:
-                list[x][y + 1] = -3
-            if right_coordinates(x - 1, y) and list[x - 1][y] != -2:
-                list[x - 1][y] = -3
-            if right_coordinates(x + 1, y) and list[x + 1][y] != -2:
-                list[x + 1][y] = -3
+        if destroyed:
+            for i in range(len(positions)):
+                list[positions[i][0]][positions[i][1]] = -3
 
             return "destroyed"
-        elif len(positions) == 0 or (t1 or t2 or t3 or t4) == False:
-            return "alive but no list"
-
         else:
             return positions
 
@@ -199,8 +191,7 @@ def sea_battle(user_ships):
             grid_cpu[row].append(0)  # Append a cell
     # Initialize pygame
     f = user_ships
-    grid_cpu_to_attack = f[
-        0]  # [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
+    grid_cpu_to_attack = f[0]  # [[1, 0, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 1]]
 
     curr = []
     pygame.init()
@@ -254,7 +245,13 @@ def sea_battle(user_ships):
                               HEIGHT])
 
     hp_user = 20
-
+    cpu_start = [[0, 3], [1, 2], [2, 1], [3, 0], [0, 7], [1, 6], [2, 5], [3, 4], [4, 3], [5, 2], [6, 1], [7, 0], [3, 9],
+                 [4, 8], [5, 7], [6, 6], [7, 5], [8, 4], [9, 3], [6, 9], [7, 8], [8, 7], [9, 6]]
+    cpu_add = [[0, 1], [1, 0], [0, 5], [1, 4], [2, 3], [3, 2], [4, 1], [5, 0], [0, 9], [1, 8], [2, 7], [3, 6], [4, 5],
+               [5, 4], [6, 3], [7, 2], [8, 1], [9, 0], [4, 9], [5, 8], [6, 7], [7, 6], [8, 5], [9, 4], [8, 9], [9, 8]]
+    shipdamaged = []
+    t1 = True
+    t2 = True
     # -------- Main Program Loop -----------
     while not done:
         score = 10
@@ -330,26 +327,87 @@ def sea_battle(user_ships):
         if i % 2 == 1:
             if curr != []:
                 coord = random.choice(curr)
-                grid_cpu[coord[0]][coord[1]] = -1
+
                 next_curr = shot(grid_cpu_to_attack, f[1], coord[0], coord[1])
                 if next_curr == "miss":
                     curr.remove(coord)
+                    if t2 and cpu_start.count(coord) > 0:
+                        cpu_start.remove(coord)
                     cpu_pos.remove(coord)
                     cpu_miss = True
                 elif next_curr == "destroyed":
-                    curr = []
-                    cpu_hit = True
-                elif next_curr == "alive but no list":
                     curr.remove(coord)
+                    if t2 and cpu_start.count(coord) > 0:
+                        cpu_start.remove(coord)
+                    cpu_pos.remove(coord)
+                    for i in range(len(curr)):
+                        grid_cpu_to_attack[curr[i][0]][curr[i][1]] = -3
+                    curr = []
+                    shipdamaged = []
+                    cpu_hit = True
+                    if t1:
+                        notfound = True
+                        k = -1
+                        while notfound:
+                            k += 1
+                            if len(f[1][k]) == 4:
+                                notfound = False
+                        if f[1][k][0][2] + f[1][k][1][2] + f[1][k][2][2] + f[1][k][3][2] == -8:
+                            cpu_start = cpu_start + cpu_add
+                            t1 = False
+
+                else:
+                    shipdamaged.append(coord)
+                    if shipdamaged[0][0] == shipdamaged[1][0]:
+                        t = True
+                        x = shipdamaged[0][0]
+                    else:
+                        t = False
+                        x = shipdamaged[0][1]
+                    curr.remove(coord)
+                    curr = curr + next_curr
+                    if t:
+                        for i in range(len(curr)):
+                            if curr[i][0] != x:
+                                grid_cpu_to_attack[curr[i][0]][curr[i][1]] = -3
+                                curr[i] = 0
+                    else:
+                        for i in range(len(curr)):
+                            if curr[i][1] != x:
+                                grid_cpu_to_attack[curr[i][0]][curr[i][1]] = -3
+                                curr[i] = 0
+
+                    while curr.count(0) > 0:
+                        curr.remove(0)
+                    if t2 and cpu_start.count(coord) > 0:
+                        cpu_start.remove(coord)
                     cpu_pos.remove(coord)
                     cpu_hit = True
 
             elif curr == []:
-                coord = random.choice(cpu_pos)
-                while grid_cpu_to_attack[coord[0]][coord[1]] < 0:
-                    cpu_pos.remove(coord)
+                if len(cpu_start) == 0:
+                    t2 = False
+                if t2:
+                    coord = random.choice(cpu_start)
+                    while grid_cpu_to_attack[coord[0]][coord[1]] < 0:
+                        if cpu_start.count(coord) > 0:
+                            cpu_start.remove(coord)
+                        if cpu_pos.count(coord) > 0:
+                            cpu_pos.remove(coord)
+                        if len(cpu_start) > 0:
+                            coord = random.choice(cpu_start)
+                        else:
+                            coord = random.choice(cpu_pos)
+                    if cpu_start.count(coord) > 0:
+                        cpu_start.remove(coord)
+                    if cpu_pos.count(coord):
+                        cpu_pos.remove(coord)
+                else:
                     coord = random.choice(cpu_pos)
-                grid_cpu[coord[0]][coord[1]] = -1
+                    while grid_cpu_to_attack[coord[0]][coord[1]] < 0:
+                        cpu_pos.remove(coord)
+                        coord = random.choice(cpu_pos)
+                    cpu_pos.remove(coord)
 
                 curr = shot(grid_cpu_to_attack, f[1], coord[0], coord[1])
                 if curr == "miss":
@@ -358,7 +416,8 @@ def sea_battle(user_ships):
                 elif curr == "destroyed":
                     curr = []
                     cpu_hit = True
-                elif type(curr) == list and curr != []:
+                else:
+                    shipdamaged.append(coord)
                     cpu_hit = True
 
             # curr_pos = random.choice(cpu_pos)
@@ -375,10 +434,10 @@ def sea_battle(user_ships):
             for row in range(10):
                 for column in range(10):
                     color = WHITE
-                    if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -3:
+                    if grid_cpu_to_attack[row][column] == -3:
                         color = BLUE
                     #
-                    elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -2:
+                    elif grid_cpu_to_attack[row][column] == -2:
                         color = GREEN
                         # time.sleep(1)
                     pygame.draw.rect(screen_person,
@@ -392,7 +451,11 @@ def sea_battle(user_ships):
                 cpu_hit = False
                 i += 2
                 hp_user -= 1
-                if hp_user == 0:
+                sum = 0
+                for j in range(10):
+                    for h in range(len(f[1][j])):
+                        sum += f[1][j][h][2]
+                if hp_user == 0 or sum==-40:
                     res = Tk()
                     center_window(500, 100, res)
                     result = Label(res, text=f"К сожалению, Вы проиграли", font=myFont)
