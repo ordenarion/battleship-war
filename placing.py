@@ -251,7 +251,7 @@ def placing():
 
             if event.type == pygame.QUIT and color1 == GREEN:
                 running = False
-                print("GAy")
+
                 return finalGrid
 
             elif event.type == pygame.QUIT and color1 == RED:

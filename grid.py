@@ -184,8 +184,8 @@ def sea_battle():
                               WIDTH,
                               HEIGHT])
 
-    hp_cpu = 2
-    hp_user = 2
+    hp_cpu = 75274525
+    hp_user = 4545754
     score = 100
     # -------- Main Program Loop -----------
     while not done:
@@ -265,11 +265,16 @@ def sea_battle():
         # grid_cpu[i][j]=-1
 
         if i % 2 == 1:
+            print(curr)
             if curr != []:
+
                 coord = random.choice(curr)
                 grid_cpu[coord[0]][coord[1]] = -1
                 next_curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
-                if next_curr == "miss":
+                print(next_curr)
+                if type(next_curr) == list:
+                    curr = curr + next_curr
+                elif next_curr == "miss":
                     curr.remove(coord)
                     cpu_pos.remove(coord)
                     cpu_miss = True
@@ -283,12 +288,13 @@ def sea_battle():
 
             elif curr == []:
                 coord = random.choice(cpu_pos)
-                while grid_cpu_to_attack[coord[0]][coord[1]]<0:
+                while grid_cpu_to_attack[coord[0]][coord[1]]<0 :
                     cpu_pos.remove(coord)
                     coord = random.choice(cpu_pos)
                 grid_cpu[coord[0]][coord[1]] = -1
 
                 curr = shot(grid_cpu_to_attack,f[1],coord[0],coord[1])
+                print(curr)
                 if curr == "miss":
                     curr = []
                     cpu_miss = True
@@ -312,7 +318,7 @@ def sea_battle():
             for row in range(10):
                 for column in range(10):
                     color = WHITE
-                    if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -3:
+                    if grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -3 or (grid_cpu[row][column] ==0 and ( grid_cpu_to_attack[row][column] == -1 or grid_cpu_to_attack[row][column] == -3)):
                         color = BLUE
                        #
                     elif grid_cpu[row][column] == -1 and grid_cpu_to_attack[row][column] == -2:
